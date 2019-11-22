@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#generated_files
+.npy
+.npz
+.png
+.txt
