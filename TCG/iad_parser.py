@@ -162,6 +162,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		os.makedirs(txt_path)
 
 	#get files from dataset
+	csv_contents = read_csv(csv_filename)
 	try:
 		csv_contents = read_csv(csv_filename)
 	except:
