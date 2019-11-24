@@ -165,7 +165,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 	try:
 		csv_contents = read_csv(csv_filename)
 	except:
-		print("Cannot open CSV file: "+ csv_filename)
+		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
 	file_list = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] != 0]
 	for ex in file_list:
