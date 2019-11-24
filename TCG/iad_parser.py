@@ -162,7 +162,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		os.makedirs(txt_path)
 
 	#get files from dataset
-	csv_contents = read_csv(csv_filename)
 	try:
 		csv_contents = read_csv(csv_filename)
 	except:
@@ -177,7 +176,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 			assert os.path.exists(iad_filename), "Cannot locate IAD file: "+ iad_filename
 			
 			txt_filename = os.path.join(txt_path, file_location+"_"+str(layer)+".txt")
-			sparsify_iad(iad_filename, pruning_indexes, layer, name=txt_name)
+			sparsify_iad(iad_filename, pruning_indexes, layer, name=txt_filename)
 
 if __name__ == '__main__':
 	import argparse
