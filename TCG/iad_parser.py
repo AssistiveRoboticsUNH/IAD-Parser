@@ -20,6 +20,7 @@ def preprocess(iad):
 def find_start_stop(feature, iad):
 
 	# smooth the IAD expression
+	print("IAD shape:", iad.shape)
 	feature = savgol_filter(feature, 25, 3)
 
 	# threshold the expression we are looking at
@@ -178,7 +179,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 			label_dir = os.path.join(txt_path, ex['label_name'])
 			if ( not os.path.exists(label_dir) ):
 				os.makedirs(label_dir)
-				
+
 			txt_filename = os.path.join(txt_path, file_location+"_"+str(layer)+".txt")
 			sparsify_iad(iad_filename, pruning_indexes, layer, name=txt_filename)
 
