@@ -171,6 +171,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 	file_list = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] != 0]
 	for ex in file_list:
 		file_location = os.path.join(ex['label_name'], ex['example_id'])
+		print("Converting "+file_location)
 		for layer in range(5):
 
 			iad_filename = os.path.join(iad_data_path, file_location+"_"+str(layer)+".npz")
