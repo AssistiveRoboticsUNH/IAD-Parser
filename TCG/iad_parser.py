@@ -158,7 +158,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 	
 	#setup file-io
 	txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
-	if(not os.exists(txt_path)):
+	if(not os.path.exists(txt_path)):
 		os.makedirs(txt_path)
 
 	#get files from dataset
