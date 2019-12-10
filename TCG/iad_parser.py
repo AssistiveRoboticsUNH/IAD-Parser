@@ -85,14 +85,12 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 		iad.append(iad_data[idx])
 		min_len = min(min_len, iad_data[idx].shape[1])
 
-		print(iad_data[idx].shape, min_len) 
-
+	#if the IADs for frames and flow are different lengths make them the same
 	for i in range(len(iad)):
 		iad[i] = iad[i][:, :min_len]
 
 	iad = np.concatenate(iad, axis=1)
 
-	print("IAD_shape:", iad.shape)
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
