@@ -206,7 +206,7 @@ if __name__ == '__main__':
 	#required command line args
 	parser.add_argument('dataset_dir', help='the directory where the dataset is located')
 	parser.add_argument('csv_filename', help='a csv file denoting the files in the dataset')
-	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow'])
+	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 
 	parser.add_argument('--feature_retain_count', type=int, default=10000, help='the number of features to remove')
