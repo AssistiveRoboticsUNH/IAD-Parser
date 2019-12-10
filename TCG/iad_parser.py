@@ -70,7 +70,7 @@ def postprocess(sparse_map):
 	return sparse_map
 
 
-def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, datatset_type_list, name="output.txt"):
+def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name="output.txt"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
