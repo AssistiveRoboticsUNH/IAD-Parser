@@ -88,7 +88,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	#if the IADs for frames and flow are different lengths make them the same
 	for i in range(len(iad)):
 		iad[i] = iad[i][:, :min_len]
-	iad = np.concatenate(iad, axis=1)
+	iad = np.concatenate(iad, axis=0)
 
 	print("IAD shape", iad.shape, min_len)
 
