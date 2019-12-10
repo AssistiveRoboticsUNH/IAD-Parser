@@ -153,8 +153,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 	#setup feature_rank_parser
 	iad_data_path = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id))
-	ranking_file = os.path.join(iad_data_path, "feature_ranks_"+str(dataset_id)+".npz")
-	assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
+
+	#ranking_file = os.path.join(iad_data_path, "feature_ranks_"+str(dataset_id)+".npz")
+	ranking_file = [os.path.join(dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz"),
+					os.path.join(dataset_dir, 'iad_flow_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz")]
+
+	#assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
 	pruning_indexes = get_top_n_feature_indexes(ranking_file, feature_retain_count)
 	
 	#setup file-io
