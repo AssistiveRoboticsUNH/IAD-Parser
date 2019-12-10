@@ -169,12 +169,28 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		datatset_type_list.append("flow")
 
 	#setup feature_rank_parser
-	pruning_indexes = {}
+	frame_ranking_file = os.path.join( dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
+	flow_ranking_file = os.path.join( dataset_dir, 'iad_flow_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
+
+	if(dataset_type=="frames"):
+		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
+		pruning_indexes["frames"] = get_top_n_feature_indexes(frame_ranking_file, feature_retain_count)
+	elif(dataset_type=="flow"):
+		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
+		pruning_indexes["flow"] = get_top_n_feature_indexes(flow_ranking_file, feature_retain_count)
+	elif(dataset_type=="both"):
+		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
+		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
+
+		pruning_indexes = get_top_n_feature_indexes_multiple_files(frame_ranking_file, flow_ranking_file, feature_retain_count)
+
+	ranking_files = []
 
 	for dt in datatset_type_list:
 		ranking_file = os.path.join( dataset_dir, 'iad_'+dt+'_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
 		assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
 		pruning_indexes[dt] = get_top_n_feature_indexes(ranking_file, feature_retain_count)
+	
 	
 	#setup file-io
 	txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
