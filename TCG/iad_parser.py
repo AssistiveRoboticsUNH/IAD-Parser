@@ -83,6 +83,8 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 		idx = pruning_indexes[dt][layer]
 		iad.append(iad_data[idx])
+		print(iad_data[idx].shape)
+
 	iad = np.stack(iad)
 
 	print("IAD_shape:", iad.shape)
