@@ -90,7 +90,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 		iad[i] = iad[i][:, :min_len]
 	iad = np.concatenate(iad, axis=1)
 
-	print("IAD shape", iad.shape)
+	print("IAD shape", iad.shape, min_len)
 
 
 	# determine start_stop_times for each feature in the IAD. Apply
