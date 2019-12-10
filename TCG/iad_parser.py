@@ -70,17 +70,22 @@ def postprocess(sparse_map):
 	return sparse_map
 
 
-def sparsify_iad(iad_filename, pruning_indexes, layer, name="output.txt"):
+def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, datatset_type_list, name="output.txt"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
 	'''
 
 	# open the IAD and prune any un-wanted features
-	iad = np.load(iad_filename)["data"]
+	iad = []
+	for dt in datatset_type_list:
+		iad = np.load(iad_filenames[dt])["data"]
 
-	idx = pruning_indexes[layer]
-	iad = iad[idx]
+		idx = pruning_indexes[dt][layer]
+		iad.append(iad[idx])
+	iad = np.stack(iad)
+
+	print("IAD_shape:", iad.shape)
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
@@ -151,19 +156,22 @@ def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show
 
 def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_count):
 
+	datatset_type_list = []
+	if(dataset_type=="frames" or dataset_type=="both"):
+		datatset_type_list.append("frames")
+	if(dataset_type=="flow" or dataset_type=="both"):
+		datatset_type_list.append("flow")
+
 	#setup feature_rank_parser
-	iad_data_path = os.path.join(dataset_dir, 'iad_'+dataset_type+'_'+str(dataset_id))
+	pruning_indexes = {}
 
-	#ranking_file = os.path.join(iad_data_path, "feature_ranks_"+str(dataset_id)+".npz")
-	ranking_file = [os.path.join(dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz"),
-					os.path.join(dataset_dir, 'iad_flow_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz")]
-
-	#assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
-	pruning_indexes = get_top_n_feature_indexes(ranking_file, feature_retain_count)
+	for dt in datatset_type_list:
+		ranking_file = os.path.join( dataset_dir, 'iad_'+dt+'_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
+		assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
+		pruning_indexes[dt] = get_top_n_feature_indexes(ranking_file, feature_retain_count)
 	
 	#setup file-io
-	#txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
-	txt_path = os.path.join(dataset_dir, 'txt_both_'+str(dataset_id))
+	txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
 	if(not os.path.exists(txt_path)):
 		os.makedirs(txt_path)
 
@@ -180,15 +188,17 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		print("Converting "+file_location)
 		for layer in range(5):
 
-			iad_filename = os.path.join(iad_data_path, file_location+"_"+str(layer)+".npz")
-			assert os.path.exists(iad_filename), "Cannot locate IAD file: "+ iad_filename
+			iad_filenames = {}
+			for dt in datatset_type_list:
+				iad_filenames[dt] = os.path.join(dataset_dir, 'iad_'+dt+'_'+str(dataset_id), file_location+"_"+str(layer)+".npz") 
+				assert os.path.exists(iad_filenames[dt]), "Cannot locate IAD file: "+ iad_filenames[dt]
 			
 			label_dir = os.path.join(txt_path, ex['label_name'])
 			if ( not os.path.exists(label_dir) ):
 				os.makedirs(label_dir)
 
 			txt_filename = os.path.join(txt_path, file_location+"_"+str(layer)+".txt")
-			sparsify_iad(iad_filename, pruning_indexes, layer, name=txt_filename)
+			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
 
 if __name__ == '__main__':
 	import argparse
