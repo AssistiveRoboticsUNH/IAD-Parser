@@ -186,14 +186,6 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count)
 
-	ranking_files = []
-
-	for dt in datatset_type_list:
-		ranking_file = os.path.join( dataset_dir, 'iad_'+dt+'_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
-		assert os.path.exists(ranking_file), "Cannot locate Feature Ranking file: "+ ranking_file
-		pruning_indexes[dt] = get_top_n_feature_indexes(ranking_file, feature_retain_count)
-	
-	
 	#setup file-io
 	txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
 	if(not os.path.exists(txt_path)):
