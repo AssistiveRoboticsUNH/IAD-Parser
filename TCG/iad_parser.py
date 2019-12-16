@@ -213,7 +213,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 				iad_filenames[dt] = os.path.join(dataset_dir, 'iad_'+dt+'_'+str(dataset_id), file_location+"_"+str(layer)+".npz") 
 				assert os.path.exists(iad_filenames[dt]), "Cannot locate IAD file: "+ iad_filenames[dt]
 			
-			label_dir = os.path.join(txt_path, ex['label_name'])
+			label_dir = os.path.join(txt_path, str(layer),ex['label_name'])
 			if ( not os.path.exists(label_dir) ):
 				os.makedirs(label_dir)
 
