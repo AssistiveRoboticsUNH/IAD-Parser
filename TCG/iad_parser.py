@@ -17,7 +17,7 @@ from csv_utils import read_csv
 def preprocess(iad):
 	return iad[:, 3:-3]
 
-def find_start_stop(feature, iad, depth):
+def find_start_stop(feature, iad, layer):
 
 	# smooth the IAD expression
 	if(layer < 4):
