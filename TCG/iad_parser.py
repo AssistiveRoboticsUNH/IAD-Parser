@@ -81,7 +81,6 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	# open the IAD and prune any un-wanted features
 	iad, min_len = [], sys.maxint
 	for dt in datatset_type_list:
-		print("dt:", dt)
 		iad_data = np.load(iad_filenames[dt])["data"]
 
 		idx = pruning_indexes[dt][layer]
