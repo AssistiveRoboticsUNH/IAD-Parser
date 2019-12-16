@@ -99,7 +99,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
-	#iad = preprocess(iad)
+	iad = preprocess(iad)
 	sparse_map = []
 	for feature in iad:
 		sparse_map.append(find_start_stop(feature, iad))
@@ -217,7 +217,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 			if ( not os.path.exists(label_dir) ):
 				os.makedirs(label_dir)
 
-			txt_filename = os.path.join(txt_path, file_location+"_"+str(layer)+".txt")
+			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
 			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
 
 if __name__ == '__main__':
