@@ -17,16 +17,13 @@ from csv_utils import read_csv
 def preprocess(iad):
 	return iad[:, 3:-3]
 
-def find_start_stop(feature, iad):
+def find_start_stop(feature, iad, depth):
 
 	# smooth the IAD expression
-	#if(iad.shape[1] > 25):
-	#	feature = savgol_filter(feature, 25, 3)  ## CONSIDER A DECREASING SIZE FOR THE WINDOW BASED ON SIZE
-	print(iad.shape[1], iad.shape[1]/2)
-	if(iad.shape[1]/2 % 2 == 0):
-		feature = savgol_filter(feature, (iad.shape[1]/2)-1, 3)
-	else:
-		feature = savgol_filter(feature, iad.shape[1]/2, 3)
+	if(layer < 4):
+		w_size =  (iad.shape[1]/2) if (iad.shape[1]/2) % 2 != 0 else  (iad.shape[1]/2)-1
+		feature = savgol_filter(feature, (iad.shape[1]/2), 3)  ## 25
+	
 	
 	# threshold the expression we are looking at
 	avg_val = np.mean(feature)
@@ -109,7 +106,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	iad = preprocess(iad)
 	sparse_map = []
 	for feature in iad:
-		sparse_map.append(find_start_stop(feature, iad))
+		sparse_map.append(find_start_stop(feature, iad, layer))
 	sparse_map = postprocess(sparse_map)
 
 	# write start_stop_times to file. Each feature is given a unique 3 char  
