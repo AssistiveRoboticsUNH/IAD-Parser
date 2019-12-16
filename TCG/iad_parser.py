@@ -20,8 +20,8 @@ def preprocess(iad):
 def find_start_stop(feature, iad):
 
 	# smooth the IAD expression
-	#if(iad.shape[1] > 25):
-	#	feature = savgol_filter(feature, 25, 3)  ## CONSIDER A DECREASING SIZE FOR THE WINDOW BASED ON SIZE
+	if(iad.shape[1] > 25):
+		feature = savgol_filter(feature, 25, 3)  ## CONSIDER A DECREASING SIZE FOR THE WINDOW BASED ON SIZE
 	
 	# threshold the expression we are looking at
 	avg_val = np.mean(feature)
@@ -55,7 +55,9 @@ def postprocess(sparse_map):
 	
 		remove_pairs = []
 		for p, pair in enumerate(feat):
-
+			pair[0] += 3 
+			pair[1] += 3
+			'''
 			if pair[1]-pair[0] > 3:
 
 				#offset accoridng to beginning and end trimming
@@ -64,7 +66,7 @@ def postprocess(sparse_map):
 
 			else:
 				remove_pairs.append(pair)
-
+			'''
 		# remove pairs that are smaller than 3 in length
 		for pair in remove_pairs:
 			feat.remove(pair)
@@ -99,7 +101,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
-	#iad = preprocess(iad)
+	iad = preprocess(iad)
 	sparse_map = []
 	for feature in iad:
 		sparse_map.append(find_start_stop(feature, iad))
