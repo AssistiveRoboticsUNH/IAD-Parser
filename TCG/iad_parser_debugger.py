@@ -4,6 +4,7 @@ from iad_parser import *
 if __name__ == '__main__':
 	
 	src = "../input"
+	#label = "after"
 	label = "equals"
 
 
@@ -21,7 +22,8 @@ if __name__ == '__main__':
 	pruning_indexes = get_top_n_feature_indexes(ranking_file, feature_retain_count)
 	
 
-	for f in range(5):
+	for f in range(4, 5):
+		#file = "352_"+str(f)+".npz"
 		file = "22_"+str(f)+".npz"
 		layer = f
 		iad_filename = os.path.join(src, label, file)
@@ -29,9 +31,7 @@ if __name__ == '__main__':
 
 		print(len(pruning_indexes[layer]))
 
-
-
 		print("Opening: ", f)
-		sparse_map = sparsify_iad(iad_filename, pruning_indexes, layer)
+		sparse_map = sparsify_iad(["frames"], {"frames":iad_filename}, {"frames":pruning_indexes}, layer)
 
-		display(iad_filename, pruning_indexes, layer, sparse_map, name="active_"+str(f)+".png")
+		display(iad_filename, pruning_indexes, layer, sparse_map, name=label+"_"+str(f)+".png", show=False)

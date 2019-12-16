@@ -22,10 +22,12 @@ def find_start_stop(feature, iad):
 	# smooth the IAD expression
 	if(iad.shape[1] > 25):
 		feature = savgol_filter(feature, 25, 3)  ## CONSIDER A DECREASING SIZE FOR THE WINDOW BASED ON SIZE
-
+	
 	# threshold the expression we are looking at
 	avg_val = np.mean(feature)
 	std_dev = np.std(feature)
+
+	#print("mean: {:2.4f}, std: {:2.4f}, thresh: {:2.4f}, max: {:2.4f}, min: {:2.4f}".format(avg_val, std_dev, avg_val+std_dev, max(feature), min(feature)))
 	above_threshold = np.argwhere(feature > avg_val+std_dev).reshape(-1)
 
 	# identify the start and stop times of the events
@@ -54,14 +56,14 @@ def postprocess(sparse_map):
 		remove_pairs = []
 		for p, pair in enumerate(feat):
 
-			if pair[1]-pair[0] > 3:
+			#if pair[1]-pair[0] > 3:
 
-				#offset accoridng to beginning and end trimming
-				pair[0] += 3 
-				pair[1] += 3 
+			#offset accoridng to beginning and end trimming
+			pair[0] += 3 
+			pair[1] += 3 
 
-			else:
-				remove_pairs.append(pair)
+			#else:
+			#	remove_pairs.append(pair)
 
 		# remove pairs that are smaller than 3 in length
 		for pair in remove_pairs:
@@ -79,6 +81,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	# open the IAD and prune any un-wanted features
 	iad, min_len = [], sys.maxint
 	for dt in datatset_type_list:
+		print("dt:", dt)
 		iad_data = np.load(iad_filenames[dt])["data"]
 
 		idx = pruning_indexes[dt][layer]
@@ -97,11 +100,11 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
-	iad = preprocess(iad)
+	#iad = preprocess(iad)
 	sparse_map = []
 	for feature in iad:
 		sparse_map.append(find_start_stop(feature, iad))
-	sparse_map = postprocess(sparse_map)
+	#sparse_map = postprocess(sparse_map)
 
 	# write start_stop_times to file. Each feature is given a unique 3 char  
 	# alphabetical code to identify it. This should cover up to 17K unique
@@ -124,11 +127,13 @@ def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show
 	
 	# open the IAD and prune any un-wanted features
 	iad = np.load(iad_filename)["data"]
+	scale = 6
 
 	idx = pruning_indexes[layer]
 	iad = iad[idx]
-	iad[:] = 0.0
+	#iad[:] = 0.0
 
+	print("IAD shape:", iad.shape)
 	# inverse IAD so that black indicates high expression
 	iad = 1-iad
 
