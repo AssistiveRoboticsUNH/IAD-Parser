@@ -99,11 +99,11 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
-	iad = preprocess(iad)
+	#iad = preprocess(iad)
 	sparse_map = []
 	for feature in iad:
 		sparse_map.append(find_start_stop(feature, iad))
-	#sparse_map = postprocess(sparse_map)
+	sparse_map = postprocess(sparse_map)
 
 	# write start_stop_times to file. Each feature is given a unique 3 char  
 	# alphabetical code to identify it. This should cover up to 17K unique
