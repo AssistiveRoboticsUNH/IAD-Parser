@@ -22,7 +22,10 @@ def find_start_stop(feature, iad):
 	# smooth the IAD expression
 	#if(iad.shape[1] > 25):
 	#	feature = savgol_filter(feature, 25, 3)  ## CONSIDER A DECREASING SIZE FOR THE WINDOW BASED ON SIZE
-	feature = savgol_filter(feature, iad.shape[1]/2, 3)
+	if(iad.shape[1]/2 % 2 == 0):
+		feature = savgol_filter(feature, (iad.shape[1]/2)-1, 3)
+	else:
+		feature = savgol_filter(feature, iad.shape[1]/2, 3)
 	
 	# threshold the expression we are looking at
 	avg_val = np.mean(feature)
