@@ -15,14 +15,20 @@ from feature_rank_utils import get_top_n_feature_indexes, get_top_n_feature_inde
 from csv_utils import read_csv
 
 def preprocess(iad):
-	return iad[:, 3:-3]
+	iad = iad[:, 3:-3]
+
+	if(iad.shape[1] > 25):
+		for i in range(iad.shape[0]):
+			iad[i] = savgol_filter(iad[i], 25, 3)
+
+	return iad
 
 def find_start_stop(feature, iad, layer):
 
 	# smooth the IAD expression
-	if(iad.shape[1] > 25):
+	#if(iad.shape[1] > 25):
 		#w_size =  (iad.shape[1]/2) if (iad.shape[1]/2) % 2 != 0 else (iad.shape[1]/2)-1
-		feature = savgol_filter(feature, 25, 3)  ## 25
+		#feature = savgol_filter(feature, 25, 3)  ## 25
 	
 	
 	# threshold the expression we are looking at
