@@ -17,9 +17,11 @@ from csv_utils import read_csv
 def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
-	if(iad.shape[1] > 25):
+	smooth_value = 21
+
+	if(iad.shape[1] > smooth_value):
 		for i in range(iad.shape[0]):
-			iad[i] = savgol_filter(iad[i], 25, 3)
+			iad[i] = savgol_filter(iad[i], smooth_value, 3)
 
 	return iad
 
