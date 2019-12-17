@@ -57,9 +57,9 @@ def postprocess(sparse_map):
 	
 		remove_pairs = []
 		for p, pair in enumerate(feat):
-			pair[0] += 3 
-			pair[1] += 3
-			'''
+			#pair[0] += 3 
+			#pair[1] += 3
+			
 			if pair[1]-pair[0] > 3:
 
 				#offset accoridng to beginning and end trimming
@@ -68,7 +68,7 @@ def postprocess(sparse_map):
 
 			else:
 				remove_pairs.append(pair)
-			'''
+			
 		# remove pairs that are smaller than 3 in length
 		for pair in remove_pairs:
 			feat.remove(pair)
