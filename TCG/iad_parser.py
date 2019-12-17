@@ -61,7 +61,7 @@ def postprocess(sparse_map, layer):
 	Remove any start stop times that are shorter than 3 time instances
 	'''
 
-	if(layer < 3):
+	if(layer < 5):
 
 		for f, feat in enumerate(sparse_map):
 		
