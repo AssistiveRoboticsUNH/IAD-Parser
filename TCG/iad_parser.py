@@ -14,7 +14,7 @@ sys.path.append("../../IAD-Generator/iad-generation/")
 from feature_rank_utils import get_top_n_feature_indexes, get_top_n_feature_indexes_combined
 from csv_utils import read_csv
 
-def preprocess(iad):
+def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
 	if(iad.shape[1] > 25):
@@ -23,7 +23,7 @@ def preprocess(iad):
 
 	return iad
 
-def find_start_stop(feature, iad, layer):
+def find_start_stop(feature, iad):
 
 	# smooth the IAD expression
 	#if(iad.shape[1] > 25):
@@ -53,31 +53,33 @@ def find_start_stop(feature, iad, layer):
 	return start_stop_times
 
 
-def postprocess(sparse_map):
+def postprocess(sparse_map, layer):
 	'''
 	Take a sparse map and offset it by three to account for the trimmed IAD.
 	Remove any start stop times that are shorter than 3 time instances
 	'''
 
-	for f, feat in enumerate(sparse_map):
-	
-		remove_pairs = []
-		for p, pair in enumerate(feat):
-			#pair[0] += 3 
-			#pair[1] += 3
-			
-			if pair[1]-pair[0] > 3:
+	if(layer < 3):
 
-				#offset accoridng to beginning and end trimming
-				pair[0] += 3 
-				pair[1] += 3 
+		for f, feat in enumerate(sparse_map):
+		
+			remove_pairs = []
+			for p, pair in enumerate(feat):
+				#pair[0] += 3 
+				#pair[1] += 3
+				
+				if pair[1]-pair[0] > 3:
 
-			else:
-				remove_pairs.append(pair)
-			
-		# remove pairs that are smaller than 3 in length
-		for pair in remove_pairs:
-			feat.remove(pair)
+					#offset accoridng to beginning and end trimming
+					pair[0] += 3 
+					pair[1] += 3 
+
+				else:
+					remove_pairs.append(pair)
+				
+			# remove pairs that are smaller than 3 in length
+			for pair in remove_pairs:
+				feat.remove(pair)
 		
 	return sparse_map
 
@@ -109,11 +111,11 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	# determine start_stop_times for each feature in the IAD. Apply
 	# any pre or post processing dteps to clean up the IAD and sparse map
-	iad = preprocess(iad)
+	iad = preprocess(iad, layer)
 	sparse_map = []
 	for feature in iad:
-		sparse_map.append(find_start_stop(feature, iad, layer))
-	sparse_map = postprocess(sparse_map)
+		sparse_map.append(find_start_stop(feature, iad))
+	sparse_map = postprocess(sparse_map, layer)
 
 	# write start_stop_times to file. Each feature is given a unique 3 char  
 	# alphabetical code to identify it. This should cover up to 17K unique
