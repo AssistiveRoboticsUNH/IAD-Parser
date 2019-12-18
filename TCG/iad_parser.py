@@ -123,7 +123,6 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	# any pre or post processing dteps to clean up the IAD and sparse map
 	iad = preprocess(iad, layer)
 	sparse_map = []
-	print("iad_shape:", iad.shape)
 	for feature in iad:
 		sparse_map.append(find_start_stop(feature, iad))
 	sparse_map = postprocess(sparse_map, layer)
