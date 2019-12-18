@@ -17,11 +17,8 @@ from csv_utils import read_csv
 def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
-	if(layer == 0):
-		smooth_value = 25
-	elif(layer == 1):
-		smooth_value = 31
-	elif(layer >= 2):
+	smooth_value = 25
+	if(layer >= 2):
 		smooth_value = 35
 
 	if(iad.shape[1] > smooth_value):
