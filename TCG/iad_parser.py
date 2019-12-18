@@ -17,7 +17,12 @@ from csv_utils import read_csv
 def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
-	smooth_value = 35
+	if(layer == 0):
+		smooth_value = 25
+	elif(layer == 1):
+		smooth_value = 31
+	elif(layer >= 2):
+		smooth_value = 35
 
 	if(iad.shape[1] > smooth_value):
 		for i in range(iad.shape[0]):
@@ -70,7 +75,7 @@ def postprocess(sparse_map, layer):
 				#pair[0] += 3 
 				#pair[1] += 3
 				
-				if pair[1]-pair[0] > 2:
+				if pair[1]-pair[0] > 1:
 
 					#offset accoridng to beginning and end trimming
 					pair[0] += 3 
