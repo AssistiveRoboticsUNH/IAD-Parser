@@ -66,6 +66,10 @@ def postprocess(sparse_map, layer):
 	Remove any start stop times that are shorter than 3 time instances
 	'''
 
+	noise_limit = 3
+	if (layer >= 2 ):
+		noise_limit = 1
+
 	if(layer < 5):
 
 		for f, feat in enumerate(sparse_map):
@@ -75,7 +79,7 @@ def postprocess(sparse_map, layer):
 				#pair[0] += 3 
 				#pair[1] += 3
 				
-				if pair[1]-pair[0] > 1:
+				if pair[1]-pair[0] > noise_limit:
 
 					#offset accoridng to beginning and end trimming
 					pair[0] += 3 
