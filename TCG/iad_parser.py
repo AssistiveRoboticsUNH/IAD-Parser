@@ -18,7 +18,7 @@ def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
 	smooth_value = 25
-	if(layer >= 1):
+	if(layer >= 1 and layer != 3):
 		smooth_value = 35
 
 	if(iad.shape[1] > smooth_value):
