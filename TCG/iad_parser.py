@@ -70,7 +70,7 @@ def postprocess(sparse_map, layer):
 				#pair[0] += 3 
 				#pair[1] += 3
 				
-				if pair[1]-pair[0] > 1:
+				if pair[1]-pair[0] > 2:
 
 					#offset accoridng to beginning and end trimming
 					pair[0] += 3 
