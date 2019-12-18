@@ -17,9 +17,9 @@ from csv_utils import read_csv
 def preprocess(iad, layer):
 	iad = iad[:, 3:-3]
 
-	smooth_value = 21#25
-	#if(layer >= 1 and layer != 3):
-	#	smooth_value = 35
+	smooth_value = 25
+	if(layer >= 1 and layer != 3):
+		smooth_value = 35
 
 	if(iad.shape[1] > smooth_value):
 		for i in range(iad.shape[0]):
@@ -67,27 +67,26 @@ def postprocess(sparse_map, layer):
 	if (layer >= 2 ):
 		noise_limit = 1
 
-	if(layer < 5):
 
-		for f, feat in enumerate(sparse_map):
-		
-			remove_pairs = []
-			for p, pair in enumerate(feat):
-				#pair[0] += 3 
-				#pair[1] += 3
-				
-				if pair[1]-pair[0] > noise_limit:
+	for f, feat in enumerate(sparse_map):
+	
+		remove_pairs = []
+		for p, pair in enumerate(feat):
+			#pair[0] += 3 
+			#pair[1] += 3
+			
+			if pair[1]-pair[0] > noise_limit:
 
-					#offset accoridng to beginning and end trimming
-					pair[0] += 3 
-					pair[1] += 3 
+				#offset accoridng to beginning and end trimming
+				pair[0] += 3 
+				pair[1] += 3 
 
-				else:
-					remove_pairs.append(pair)
-				
-			# remove pairs that are smaller than 3 in length
-			for pair in remove_pairs:
-				feat.remove(pair)
+			else:
+				remove_pairs.append(pair)
+			
+		# remove pairs that are smaller than 3 in length
+		for pair in remove_pairs:
+			feat.remove(pair)
 		
 	return sparse_map
 
