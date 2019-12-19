@@ -16,8 +16,8 @@ from csv_utils import read_csv
 
 def preprocess(iad, layer):
 
-	#if(iad.shape[1] > 10):
-	#	iad = iad[:, 3:-3]
+	if(iad.shape[1] > 10):
+	 	iad = iad[:, 3:-3]
 
 	smooth_value = 25
 	if(layer >= 1 and layer != 3):
@@ -144,6 +144,50 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 
 	return sparse_map
 
+def sparsify_iad2(datatset_type_list, iad_filenames, pruning_indexes, layer, name="output.txt"):
+	'''
+	Convert an IAD into a sparse map that indicates the start and stop times 
+	when a feature is expressed. Write the map to a file.
+	'''
+
+	# open the IAD and prune any un-wanted features
+	iad, min_len = [], sys.maxint
+	for dt in datatset_type_list:
+		iad_data = np.load(iad_filenames[dt])["data"]
+
+		idx = pruning_indexes[dt][layer]
+		#print("shape:", iad_data[idx].shape, len(idx))
+
+		iad.append(iad_data[idx])
+		min_len = min(min_len, iad_data[idx].shape[1])
+
+	#if the IADs for frames and flow are different lengths make them the same
+	for i in range(len(iad)):
+		iad[i] = iad[i][:, :min_len]
+	iad = np.concatenate(iad, axis=0)
+
+	#print("IAD shape", iad.shape, min_len)
+
+
+	# determine start_stop_times for each feature in the IAD. Apply
+	# any pre or post processing dteps to clean up the IAD and sparse map
+	iad = preprocess(iad, layer)
+	#sparse_map = []
+	#for feature in iad:
+	#	sparse_map.append(find_start_stop(feature, iad))
+	#sparse_map = postprocess(sparse_map, layer)
+
+	# write start_stop_times to file. Each feature is given a unique 3 char  
+	# alphabetical code to identify it. This should cover up to 17K unique
+	# features
+	#ofile = open(name, 'w')
+	#ofile.close()
+
+	print(np.max(iad, axis=1).shape)
+	np.savez(name, max=np.max(iad, axis=1), mean=np.mean(iad, axis=1), min=np.min(iad, axis=1))
+
+	#return sparse_map
+
 def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show=True, save=True):
 	
 	# open the IAD and prune any un-wanted features
@@ -241,7 +285,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 				os.makedirs(label_dir)
 
 			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
-			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
+			sparsify_iad2(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
 
 if __name__ == '__main__':
 	import argparse
