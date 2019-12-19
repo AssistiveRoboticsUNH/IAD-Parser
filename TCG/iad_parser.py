@@ -183,7 +183,7 @@ def sparsify_iad2(datatset_type_list, iad_filenames, pruning_indexes, layer, nam
 	#ofile = open(name, 'w')
 	#ofile.close()
 
-	print(np.max(iad, axis=1).shape)
+	#print(np.max(iad, axis=1).shape)
 	np.savez(name, max=np.max(iad, axis=1), mean=np.mean(iad, axis=1), min=np.min(iad, axis=1))
 
 	#return sparse_map
