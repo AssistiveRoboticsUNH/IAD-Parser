@@ -285,7 +285,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 				os.makedirs(label_dir)
 
 			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
+			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
 			sparsify_iad2(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
+
 
 if __name__ == '__main__':
 	import argparse
