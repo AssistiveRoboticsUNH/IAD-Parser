@@ -183,10 +183,10 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 			prev_mean = global_threshold["mean"][layer][i]
 			new_mean = ((prev_mean * (count + j)) + x) / (count + j + 1)
 
-			print(x)
-			print(prev_mean)
-			print(new_mean)
-			print('')
+			#print(x)
+			#print(prev_mean)
+			#print(new_mean)
+			#print('')
 			
 			variance = global_threshold["std_dev"][layer][i]
 			diff_sums = (x - new_mean) * (x - prev_mean)
@@ -333,7 +333,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 	file_list = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	
-	for ex in file_list:
+	for ex in file_list[:1]:
 		file_location = os.path.join(ex['label_name'], ex['example_id'])
 		print("Converting "+file_location)
 		for layer in range(5):
@@ -346,9 +346,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
 			add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, layer, global_threshold_values)
 
-	print("mean:", global_threshold["mean"])
-	print("std_dev:", global_threshold["std_dev"])
-	print("count:", global_threshold["count"])
+	for i in range(5):
+		print(str(i))
+		print("mean:", global_threshold["mean"][i])
+		print("std_dev:", global_threshold["std_dev"][i])
+		print("count:", global_threshold["count"][i])
+		print('')
 
 
 	"""
