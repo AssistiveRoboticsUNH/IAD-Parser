@@ -183,6 +183,9 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 			prev_mean = global_threshold["mean"][layer][i]
 			new_mean = ((prev_mean * (count + j)) + x) / (count + j + 1)
 
+			print(prev_mean)
+			print(new_mean)
+			print('')
 			
 			variance = global_threshold["std_dev"][layer][i]
 			diff_sums = (x - new_mean)(x - prev_mean)
