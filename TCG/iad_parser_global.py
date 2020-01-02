@@ -348,9 +348,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 	for i in range(5):
 		print(str(i))
-		print("mean:", global_threshold["mean"][i])
-		print("std_dev:", global_threshold["std_dev"][i])
-		print("count:", global_threshold["count"][i])
+		print("mean:", global_threshold_values["mean"][i])
+		print("std_dev:", global_threshold_values["std_dev"][i])
+		print("count:", global_threshold_values["count"][i])
 		print('')
 
 
