@@ -176,24 +176,29 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 	for i, feature in enumerate(iad):
 
 		count = global_threshold["count"] [layer]
+		if(count > 0):
+			for j, x in enumerate(feature):
 
-		for j, x in enumerate(feature):
 
+				prev_mean = global_threshold["mean"][layer][i]
+				new_mean = ((prev_mean * (count + j)) + x) / (count + j + 1)
 
-			prev_mean = global_threshold["mean"][layer][i]
-			new_mean = ((prev_mean * (count + j)) + x) / (count + j + 1)
+				#print(x)
+				#print(prev_mean)
+				#print(new_mean)
+				#print('')
+				global_threshold["mean"][layer][i] = new_mean
 
-			#print(x)
-			#print(prev_mean)
-			#print(new_mean)
-			#print('')
-			
-			#variance = global_threshold["std_dev"][layer][i]
-			#diff_sums = (x - new_mean) * (x - prev_mean)
-			#new_variance = ((count+j-1)*variance + diff_sums) / (count+j)
+				variance = global_threshold["std_dev"][layer][i] ** 2
+				diff_sums = (x - new_mean) * (x - prev_mean)
+				new_variance = ((count+j-1)*variance + diff_sums) / (count+j)
 
-			global_threshold["mean"][layer][i] = new_mean
-			#global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
+				global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
+		else:
+			global_threshold["mean"][layer][i] = np.mean(feature)
+			global_threshold["std_dev"][layer][i] = np.stdev(feature)
+		
+
 
 	global_threshold["count"][layer] += iad.shape[1]
 
