@@ -170,26 +170,28 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 
 	
 	#obtain the average and std_dev for each feature in the IAD
-	prev_count = global_threshold["count"] 
+	prev_count = global_threshold["count"][layer] 
 	new_count = prev_count + iad.shape[1]
 
 	for i, feature in enumerate(iad):
 
-		count = global_threshold["count"] 
+		count = global_threshold["count"] [layer]
 
 		for j, x in enumerate(feature):
 
 
-			prev_mean = global_threshold["mean"][i]
+			prev_mean = global_threshold["mean"][layer][i]
 			new_mean = ((prev_mean_val * (count + j)) + x) / (count + j + 1)
 
+			
+			variance = global_threshold["std_dev"][layer][i]
 			diff_sums = (x - new_mean)(x - prev_mean)
 			new_variance = ((count+j-2)*variance + diff_sums) / (count+j-1)
 
-			global_threshold["mean"][i] = new_mean
-			global_threshold["std_dev"][i] = math.sqrt(new_variance)
+			global_threshold["mean"][layer][i] = new_mean
+			global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
 
-	global_threshold["count"] += iad.shape[1]
+	global_threshold["count"][layer] += iad.shape[1]
 
 
 """
@@ -317,7 +319,13 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 	except:
 		print("ERROR: Cannot open CSV file: "+ csv_filename)
 
-	global_threshold_values = {"mean": [], "std_dev":[], "count":0}
+	global_threshold_values = {"mean": [], "std_dev":[], "count":[]}
+	for i in range(5):
+		global_threshold_values["mean"].append([0]*feature_retain_count)
+		global_threshold_values["std_dev"].append([0]*feature_retain_count)
+		global_threshold_values["count"].append(0)
+
+
 
 	file_list = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	
