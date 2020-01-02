@@ -188,12 +188,12 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 			#print(new_mean)
 			#print('')
 			
-			variance = global_threshold["std_dev"][layer][i]
-			diff_sums = (x - new_mean) * (x - prev_mean)
-			new_variance = ((count+j-2)*variance + diff_sums) / (count+j-1)
+			#variance = global_threshold["std_dev"][layer][i]
+			#diff_sums = (x - new_mean) * (x - prev_mean)
+			#new_variance = ((count+j-1)*variance + diff_sums) / (count+j)
 
 			global_threshold["mean"][layer][i] = new_mean
-			global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
+			#global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
 
 	global_threshold["count"][layer] += iad.shape[1]
 
