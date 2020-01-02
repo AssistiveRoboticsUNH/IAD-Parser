@@ -29,7 +29,7 @@ def preprocess(iad, layer):
 
 	return iad
 
-def find_start_stop(feature, iad):
+def find_start_stop(feature, iad, threshold_value):
 
 	# smooth the IAD expression
 	#if(iad.shape[1] > 25):
@@ -39,11 +39,11 @@ def find_start_stop(feature, iad):
 	
 	# threshold the expression we are looking at
 
-	avg_val = np.mean(feature)
-	std_dev = np.std(feature)
+	#avg_val = np.mean(feature)
+	#std_dev = np.std(feature)
 
 	#print("mean: {:2.4f}, std: {:2.4f}, thresh: {:2.4f}, max: {:2.4f}, min: {:2.4f}".format(avg_val, std_dev, avg_val+std_dev, max(feature), min(feature)))
-	above_threshold = np.argwhere(feature > avg_val+std_dev).reshape(-1)
+	above_threshold = np.argwhere(feature > threshold_value).reshape(-1)
 
 	# identify the start and stop times of the events
 	start_stop_times = []
@@ -94,7 +94,7 @@ def postprocess(sparse_map, layer):
 	return sparse_map
 
 
-def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name="output.txt"):
+def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, global_threshold, name="output.txt"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
@@ -123,8 +123,9 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name
 	# any pre or post processing dteps to clean up the IAD and sparse map
 	iad = preprocess(iad, layer)
 	sparse_map = []
-	for feature in iad:
-		sparse_map.append(find_start_stop(feature, iad))
+	for i, feature in enumerate(iad):
+		threshold_value = global_threshold["mean"][layer] + global_threshold["std_dev"][layer]
+		sparse_map.append(find_start_stop(feature, iad, threshold_value))
 	sparse_map = postprocess(sparse_map, layer)
 
 	# write start_stop_times to file. Each feature is given a unique 3 char  
@@ -318,7 +319,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count)
 
 	#setup file-io
-	txt_path = os.path.join(dataset_dir, 'txt_'+dataset_type+'_'+str(dataset_id))
+	txt_path = os.path.join(dataset_dir, 'gtxt_'+dataset_type+'_'+str(dataset_id))
 	if(not os.path.exists(txt_path)):
 		os.makedirs(txt_path)
 
@@ -350,16 +351,16 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
 			add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, layer, global_threshold_values)
-
+	'''
 	for i in range(5):
 		print(str(i))
 		print("mean:", global_threshold_values["mean"][i])
 		print("std_dev:", global_threshold_values["std_dev"][i])
 		print("count:", global_threshold_values["count"][i])
 		print('')
+	'''
 
-
-	"""
+	
 	for ex in file_list:
 		file_location = os.path.join(ex['label_name'], ex['example_id'])
 		print("Converting "+file_location)
@@ -375,9 +376,9 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 				os.makedirs(label_dir)
 
 			txt_filename = os.path.join(txt_path, str(layer), file_location+"_"+str(layer)+".txt")
-			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
+			sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, global_threshold_values, name=txt_filename)
 			#sparsify_iad2(datatset_type_list, iad_filenames, pruning_indexes, layer, name=txt_filename)
-	"""
+	
 
 
 if __name__ == '__main__':
