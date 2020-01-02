@@ -196,7 +196,7 @@ def add_to_global_threshold(datatset_type_list, iad_filenames, pruning_indexes, 
 				global_threshold["std_dev"][layer][i] = math.sqrt(new_variance)
 		else:
 			global_threshold["mean"][layer][i] = np.mean(feature)
-			global_threshold["std_dev"][layer][i] = np.stdev(feature)
+			global_threshold["std_dev"][layer][i] = np.std(feature)
 		
 
 
