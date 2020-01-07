@@ -16,8 +16,8 @@ from csv_utils import read_csv
 
 def preprocess(iad, layer):
 
-	if(iad.shape[1] > 10):
-	 	iad = iad[:, 3:-3]
+	#if(iad.shape[1] > 10):
+	# 	iad = iad[:, 3:-3]
 
 	smooth_value = 25
 	if(layer >= 1 and layer != 3):
@@ -81,8 +81,8 @@ def postprocess(sparse_map, layer):
 			if pair[1]-pair[0] > noise_limit:
 
 				#offset accoridng to beginning and end trimming
-				pair[0] += 3 
-				pair[1] += 3 
+				pair[0] += 0#3 
+				pair[1] += 0#3 
 
 			else:
 				remove_pairs.append(pair)
