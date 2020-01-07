@@ -394,7 +394,7 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for dataset_type in ['frames', 'flow', 'both']:
+	for dataset_type in ['frames']:#, 'flow', 'both']:
 
 		main(FLAGS.dataset_dir, 
 			FLAGS.csv_filename,
