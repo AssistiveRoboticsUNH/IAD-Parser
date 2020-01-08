@@ -394,13 +394,14 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for dataset_type in ['frames']:#, 'flow', 'both']:
+	for dataset_type in ['frames', 'flow', 'both']:
+		for dataset_id in [2,3]:
 
-		main(FLAGS.dataset_dir, 
-			FLAGS.csv_filename,
-			dataset_type,
-			#FLAGS.dataset_type,
-			FLAGS.dataset_id,
-			FLAGS.feature_retain_count
-			)
+			main(FLAGS.dataset_dir, 
+				FLAGS.csv_filename,
+				dataset_type,
+				#FLAGS.dataset_type,
+				dataset_id,
+				FLAGS.feature_retain_count
+				)
 
