@@ -124,7 +124,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, glob
 	iad = preprocess(iad, layer)
 	sparse_map = []
 	for i, feature in enumerate(iad):
-		threshold_value = global_threshold["mean"][layer][i] + global_threshold["std_dev"][layer][i]
+		threshold_value = global_threshold["mean"][layer][i] #+ global_threshold["std_dev"][layer][i]
 		sparse_map.append(find_start_stop(feature, iad, threshold_value))
 	sparse_map = postprocess(sparse_map, layer)
 
@@ -319,7 +319,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count)
 
 	#setup file-io
-	txt_path = os.path.join(dataset_dir, 'gtxt_'+dataset_type+'_'+str(dataset_id))
+	txt_path = os.path.join(dataset_dir, 'btxt_'+dataset_type+'_'+str(dataset_id))
 	if(not os.path.exists(txt_path)):
 		os.makedirs(txt_path)
 
@@ -394,8 +394,8 @@ if __name__ == '__main__':
 
 	FLAGS = parser.parse_args()
 
-	for dataset_type in ['frames', 'flow', 'both']:
-		for dataset_id in [2,3]:
+	for dataset_type in ['frames']:#, 'flow', 'both']:
+		for dataset_id in [3]:#2,3]:
 
 			main(FLAGS.dataset_dir, 
 				FLAGS.csv_filename,
