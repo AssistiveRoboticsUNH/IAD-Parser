@@ -124,7 +124,7 @@ def sparsify_iad(datatset_type_list, iad_filenames, pruning_indexes, layer, glob
 	iad = preprocess(iad, layer)
 	sparse_map = []
 	for i, feature in enumerate(iad):
-		threshold_value = global_threshold["mean"][layer][i] - global_threshold["std_dev"][layer][i]
+		threshold_value = global_threshold["mean"][layer][i]# + global_threshold["std_dev"][layer][i]
 		sparse_map.append(find_start_stop(feature, iad, threshold_value))
 	sparse_map = postprocess(sparse_map, layer)
 
