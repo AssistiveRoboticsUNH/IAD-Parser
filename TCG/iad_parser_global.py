@@ -302,7 +302,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		datatset_type_list.append("flow")
 
 	#setup feature_rank_parser
-	frame_ranking_file = os.path.join( dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_l1_"+str(dataset_id)+".npz") 
+	frame_ranking_file = os.path.join( dataset_dir, 'iad_frames_'+str(dataset_id), "feature_ranks_l2_"+str(dataset_id)+".npz") 
 	flow_ranking_file = os.path.join( dataset_dir, 'iad_flow_'+str(dataset_id), "feature_ranks_"+str(dataset_id)+".npz") 
 
 	pruning_indexes = {}
