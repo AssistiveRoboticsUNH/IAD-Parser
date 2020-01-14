@@ -316,8 +316,11 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
 		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
 
-		weight_ranking = [[0.671875,0.6796875,0.7421875,0.609375,0.5390625],
-						  [0.703125,0.71875,0.84375,0.75,0.7421875]]
+		weight_ranking = [[0.054248,0.127451,0.14183,0.25098,0.462092],[0.10915,0.145098,0.137255,0.138562,0.231373]]
+
+		# BLOCKMOVING 3
+		#[[0.671875,0.6796875,0.7421875,0.609375,0.5390625],
+		#				  [0.703125,0.71875,0.84375,0.75,0.7421875]]
 
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
 
