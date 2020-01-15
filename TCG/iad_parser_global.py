@@ -324,6 +324,12 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
 
+
+		rgb_prune = get_top_n_feature_indexes(frame_ranking_file, feature_retain_count)
+	
+
+		print("idx:", np.all(pruning_indexes["frames"][4] == rgb_prune[4])
+
 	#setup file-io
 	txt_path = os.path.join(dataset_dir, 'btxt_'+dataset_type+'_'+str(dataset_id))
 	if(not os.path.exists(txt_path)):
