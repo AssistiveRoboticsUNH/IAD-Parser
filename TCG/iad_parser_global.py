@@ -328,7 +328,7 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		rgb_prune = get_top_n_feature_indexes(frame_ranking_file, feature_retain_count)
 	
 
-		print("idx:", np.all(pruning_indexes["frames"][4] == rgb_prune[4])
+		print("idx:", np.all(pruning_indexes["frames"][4] == rgb_prune[4]))
 
 	#setup file-io
 	txt_path = os.path.join(dataset_dir, 'btxt_'+dataset_type+'_'+str(dataset_id))
