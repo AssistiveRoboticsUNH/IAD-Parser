@@ -396,7 +396,7 @@ if __name__ == '__main__':
 	parser.add_argument('dataset_type', help='the dataset type', choices=['frames', 'flow', 'both'])
 	parser.add_argument('dataset_id', type=int, help='a csv file denoting the files in the dataset')
 
-	parser.add_argument('--feature_retain_count', type=int, default=10000, help='the number of features to remove')
+	parser.add_argument('--feature_retain_count', type=int, default=128, help='the number of features to remove')
 
 	FLAGS = parser.parse_args()
 
