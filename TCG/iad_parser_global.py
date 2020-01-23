@@ -407,15 +407,14 @@ if __name__ == '__main__':
 		FLAGS.feature_retain_count
 		)
 
-	'''
-	for dataset_type in ['frames']:#, 'flow', 'both']:
-		for dataset_id in [3]:#2,3]:
+	
+	#for dataset_type in ['frames']:#, 'flow', 'both']:
+	for dataset_id in [1,2,3]:#2,3]:
 
-			main(FLAGS.dataset_dir, 
-				FLAGS.csv_filename,
-				dataset_type,
-				#FLAGS.dataset_type,
-				dataset_id,
-				FLAGS.feature_retain_count
-				)
-	'''
+		main(FLAGS.dataset_dir, 
+			FLAGS.csv_filename,
+			dataset_type,
+			#FLAGS.dataset_type,
+			dataset_id,
+			FLAGS.feature_retain_count
+			)
