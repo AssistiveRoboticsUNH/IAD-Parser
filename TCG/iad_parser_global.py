@@ -420,7 +420,7 @@ if __name__ == '__main__':
 	parser.add_argument('--feature_retain_count', type=int, default=128, help='the number of features to remove')
 
 	FLAGS = parser.parse_args()
-	'''
+	
 	main(FLAGS.dataset_dir, 
 		FLAGS.csv_filename,
 		FLAGS.dataset_type,
@@ -439,3 +439,4 @@ if __name__ == '__main__':
 			dataset_id,
 			FLAGS.feature_retain_count
 			)
+	'''
