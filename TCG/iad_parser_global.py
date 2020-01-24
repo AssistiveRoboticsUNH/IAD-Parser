@@ -337,11 +337,11 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		# BLOCKMOVING 1
 		#weight_ranking = [[],[]]
 
-		# BLOCKMOVING 2
-		#weight_ranking = [[0.765625,0.8125,0.859375,0.671875,0.695313],[0.742188,0.835938,0.898438,0.875,0.835938]]
+		# BLOCKMOVING 2*
+		weight_ranking = [[0.765625,0.8125,0.859375,0.671875,0.695313],[0.742188,0.835938,0.898438,0.875,0.835938]]
 		
 		# BLOCKMOVING 3*
-		weight_ranking = [[0.671875,0.679688,0.742188,0.609375,0.539063],[0.703125,0.71875,0.84375,0.75,0.742188]]
+		#weight_ranking = [[0.671875,0.679688,0.742188,0.609375,0.539063],[0.703125,0.71875,0.84375,0.75,0.742188]]
 		
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
 
