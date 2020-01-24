@@ -319,11 +319,11 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		# UCF 1
 		#weight_ranking = [[],[]]
 
-		# UCF 2
-		#weight_ranking = [[],[]]
+		# UCF 2*
+		weight_ranking = [[0.120804,0.24663,0.31483,0.674861,0.842982],[0.208829,0.256675,0.354216,0.557494,0.6894]]
 
 		# UCF 3
-		#weight_ranking = [[],[]]
+		#weight_ranking = [[0.100449,0.204335,0.270949,0.528152,0.726408],[0.161248,0.187946,0.21438,0.378007,0.473169]]
 
 		# HMDB 1
 		#weight_ranking = [[],[]]
@@ -332,17 +332,17 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		#weight_ranking = [[0.075163,0.145752,0.169281,0.365359,0.566013],[0.131373,0.184314,0.205882,0.282353,0.443791]]
 
 		# HMDB 3*
-		weight_ranking = [[0.054248,0.127451,0.14183,0.25098,0.462092],[0.10915,0.145098,0.137255,0.138562,0.231373]]
+		#weight_ranking = [[0.054248,0.127451,0.14183,0.25098,0.462092],[0.10915,0.145098,0.137255,0.138562,0.231373]]
 
 		# BLOCKMOVING 1
 		#weight_ranking = [[],[]]
 
 		# BLOCKMOVING 2
-		#weight_ranking = [[0.120804,0.24663,0.31483,0.674861,0.842982],[0.208829,0.256675,0.354216,0.557494,0.6894]]
-
+		#weight_ranking = [[],[]]
+		
 		# BLOCKMOVING 3
-		#weight_ranking = [[0.100449,0.204335,0.270949,0.528152,0.726408],[0.161248,0.187946,0.21438,0.378007,0.473169]]
-
+		#weight_ranking = [[],[]]
+		
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
 
 	#setup file-io
