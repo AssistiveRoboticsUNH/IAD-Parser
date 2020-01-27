@@ -316,8 +316,8 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		assert os.path.exists(frame_ranking_file), "Cannot locate Feature Ranking file: "+ frame_ranking_file
 		assert os.path.exists(flow_ranking_file), "Cannot locate Feature Ranking file: "+ flow_ranking_file
 
-		# UCF 1 -> ready to get load_ensemble
-		#weight_ranking = [[],[]]
+		# UCF 1 -> waiting to finish training
+		weight_ranking = [[0.177901,0.334655,0.437483,0.801745,0.916997],[0.299762,0.409992,0.519958,0.7917,0.911182]]
 
 		# UCF 2* - > training
 		#weight_ranking = [[0.120804,0.24663,0.31483,0.674861,0.842982],[0.208829,0.256675,0.354216,0.557494,0.6894]]
@@ -325,22 +325,22 @@ def main(dataset_dir, csv_filename, dataset_type, dataset_id, feature_retain_cou
 		# UCF 3* - > training
 		#weight_ranking = [[0.100449,0.204335,0.270949,0.528152,0.726408],[0.161248,0.187946,0.21438,0.378007,0.473169]]
 
-		# HMDB 1*
+		# HMDB 1* - > training
 		#weight_ranking = [[0.085621,0.201307,0.21634,0.527451,0.675817],[0.190196,0.233333,0.263399,0.296732,0.332026]]
 
-		# HMDB 2* - > training
+		# HMDB 2* - > finished
 		#weight_ranking = [[0.075163,0.145752,0.169281,0.365359,0.566013],[0.131373,0.184314,0.205882,0.282353,0.443791]]
 
-		# HMDB 3* - > training
+		# HMDB 3* - > finished
 		#weight_ranking = [[0.054248,0.127451,0.14183,0.25098,0.462092],[0.10915,0.145098,0.137255,0.138562,0.231373]]
 
-		# BLOCKMOVING 1*
-		weight_ranking = [[0.921875,0.9296875,0.9296875,0.6171875,0.578125],[0.828125,0.898438,0.945313,0.945313,0.953125]]
+		# BLOCKMOVING 1* - > finished
+		#weight_ranking = [[0.921875,0.9296875,0.9296875,0.6171875,0.578125],[0.828125,0.898438,0.945313,0.945313,0.953125]]
 
-		# BLOCKMOVING 2*
+		# BLOCKMOVING 2* - > finished
 		#weight_ranking = [[0.765625,0.8125,0.859375,0.671875,0.695313],[0.742188,0.835938,0.898438,0.875,0.835938]]
 		
-		# BLOCKMOVING 3*
+		# BLOCKMOVING 3* - > finished
 		#weight_ranking = [[0.671875,0.679688,0.742188,0.609375,0.539063],[0.703125,0.71875,0.84375,0.75,0.742188]]
 		
 		pruning_indexes = get_top_n_feature_indexes_combined(frame_ranking_file, flow_ranking_file, feature_retain_count, weight_ranking)
