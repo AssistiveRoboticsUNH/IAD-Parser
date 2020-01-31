@@ -22,7 +22,7 @@ if __name__ == '__main__':
 	pruning_indexes = get_top_n_feature_indexes(ranking_file, feature_retain_count)
 	
 
-	for f in range(4, 5):
+	for f in range(1):#4, 5):
 		#file = "352_"+str(f)+".npz"
 		file = "22_"+str(f)+".npz"
 		layer = f

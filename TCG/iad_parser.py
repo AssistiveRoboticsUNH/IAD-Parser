@@ -202,24 +202,37 @@ def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show
 	# inverse IAD so that black indicates high expression
 	iad = 1-iad
 
-	# convert from Greyscale to HSV for easier color manipulation
-	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
-	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
+	
 
 	# overlay sparse map on top of IAD. Color is only used to help differentiate the
 	# different features and has no other significance. We use a value of 512 to make 
 	# the color difference more significant
+
+	src_iad = np.copy(iad)
+	iad = preprocess(iad, layer)
+	iad[iad > 0.5] = 1.0
+	iad[iad < 0.5] = 0.0
+
+	'''
+
+	# convert from Greyscale to HSV for easier color manipulation
+	iad = cv2.cvtColor(iad,cv2.COLOR_GRAY2BGR)
+	iad = cv2.cvtColor(iad,cv2.COLOR_BGR2HSV)
+
 	for f, vals in enumerate(sparse_map):
 		for v in vals:
 			iad[f, v[0]: v[1], 0] = 512*float(f)/len(sparse_map)
 			iad[f, v[0]: v[1], 1] = 0.75
+	'''
 	
 	# convert from HSV to BGR to display correctly
-	iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
+	#iad = cv2.cvtColor(iad,cv2.COLOR_HSV2BGR)
 
 	# resize image
 	scale = 6
 	iad = cv2.resize(iad, (iad.shape[1]*scale, iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
+	src_iad = cv2.resize(src_iad, (src_iad.shape[1]*scale, src_iad.shape[0]*scale), interpolation=cv2.INTER_NEAREST)
+
 
 	# display/save image 
 	if show:
@@ -229,6 +242,8 @@ def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show
 		iad *= 255
 		iad = iad.astype(np.uint8)
 		cv2.imwrite(name,iad)
+
+		cv2.imwrite("src_"+name,src_iad)
 	
 	
 
