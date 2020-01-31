@@ -243,6 +243,9 @@ def display(iad_filename, pruning_indexes, layer, sparse_map, name="image", show
 		iad = iad.astype(np.uint8)
 		cv2.imwrite(name,iad)
 
+
+		src_iad *= 255
+		src_iad = src_iad.astype(np.uint8)
 		cv2.imwrite("src_"+name,src_iad)
 	
 	
