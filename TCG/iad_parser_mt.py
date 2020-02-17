@@ -110,23 +110,25 @@ def postprocess(sparse_map, layer):
 
 
 
-def sparsify_iad(ex, dataset_type_list, layer, global_threshold, name="output.txt"):
+def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
 	'''
+	threshold_values = threshold_matrix[layer]
 
 	# open the IAD
 	iad = open(ex, dataset_type_list, layer)
-
-	# GET THE THRESHOLD VALUES AND THEN SEE IF I CAN IMPROVE THIS
-
-	# determine start_stop_times for each feature in the IAD. Apply
-	# any pre or post processing steps to clean up the IAD and sparse map
 	iad = preprocess(iad, layer)
+
+	print("binarized_iad:", iad.shape)
+	binarized_iad = iad > threshold_values
+	print("binarized_iad:", binarized_iad.shape)
+
+	'''
 	sparse_map = []
 	for i, feature in enumerate(iad):
-		threshold_value = global_threshold["mean"][layer][i]
+		
 		sparse_map.append(find_start_stop(feature, iad, threshold_value))
 	sparse_map = postprocess(sparse_map, layer)
 
@@ -146,16 +148,20 @@ def sparsify_iad(ex, dataset_type_list, layer, global_threshold, name="output.tx
 	ofile.close()
 
 	return sparse_map
+	'''
+	return
 
-def sparsify_iad_dataset(csv_dataset, depth_size, dataset_type_list, global_threshold):
+def sparsify_iad_dataset(inp):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
 	'''
 
+	csv_dataset, depth_size, dataset_type_list, threshold_matrix = inp
+
 	for layer in range(depth_size):
 		for ex in csv_dataset:
-			add_to_local_threshold(ex, layer, dataset_type_list, local_threshold)
+			add_to_local_threshold(ex, layer, dataset_type_list, threshold_matrix)
 
 
 class Avg:
@@ -176,10 +182,7 @@ def determine_threshold(inp):
 	when a feature is expressed. Write the map to a file.
 	'''
 	csv_dataset, depth_size, dataset_type_list, num_features = inp
-	#print(csv_dataset)
-	print(depth_size)
-	print(dataset_type_list)
-	print(num_features)
+	
 	'''
 	Threshold has the following shape: [num_layers, num_features, {mean, count}]
 	'''
@@ -207,11 +210,7 @@ def split_dataset_run_func(p, func, dataset, other_args):
 
 	while last < len(dataset):
 		inputs.append(
-			
-			#(dataset[int(last):int(last+chunk_size)], other_args[0], other_args[1], other_args[2],)
-
 			([dataset[int(last):int(last+chunk_size)]] + other_args)
-			#[[dataset[int(last):int(last+chunk_size)]],0,0,0]
 					)
 		last += chunk_size
 
@@ -264,10 +263,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	other_args = [depth_size,dataset_type_list,num_features]
 
 	split_threshold_info = split_dataset_run_func(p, determine_threshold, training_dataset, other_args)
-	#determine_threshold((training_dataset, depth_size,dataset_type_list,num_features))
-
-
-
 
 	#combine chunked threshodl info together
 	threshold_matrix = np.zeros((depth_size, num_features))
@@ -279,26 +274,15 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	print(threshold_matrix.shape)
 	print(threshold_matrix)
 
-	'''
+	
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
-	other_args = 0
+	other_args = [depth_size,dataset_type_list,threshold_matrix]
 	sparsify_iad(p, add_to_global_threshold, full_dataset, other_args)
 
 
 
 
-
-
-
-	#get the threshold values for each feature in the training dataset
-	add_to_global_threshold(dataset_type_list, iad_filenames, pruning_indexes, layer, global_threshold_values)
-
-	#process the IADs and save the parsed files 
-	sparsify_iad(dataset_type_list, iad_filenames, pruning_indexes, layer, global_threshold_values, name=txt_filename)
-
-
-	'''
 
 if __name__ == '__main__':
 	import argparse
