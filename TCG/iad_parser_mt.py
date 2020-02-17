@@ -161,7 +161,7 @@ def sparsify_iad_dataset(inp):
 
 	for layer in range(depth_size):
 		for ex in csv_dataset:
-			add_to_local_threshold(ex, layer, dataset_type_list, threshold_matrix)
+			sparsify_iad(ex, layer, dataset_type_list, threshold_matrix)
 
 
 class Avg:
