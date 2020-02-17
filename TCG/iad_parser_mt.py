@@ -176,7 +176,7 @@ def determine_threshold(inp):
 	when a feature is expressed. Write the map to a file.
 	'''
 	csv_dataset, depth_size, dataset_type_list, num_features = inp
-	print(csv_dataset)
+	#print(csv_dataset)
 	print(depth_size)
 	print(dataset_type_list)
 	print(num_features)
@@ -198,7 +198,7 @@ def determine_threshold(inp):
 				local_threshold[i].update(f)
 
 		threshold.append(local_threshold)
-	return 0#threshold
+	return threshold
 
 def split_dataset_run_func(p, func, dataset, other_args):
 	chunk_size = len(dataset)/float(p._processes)
