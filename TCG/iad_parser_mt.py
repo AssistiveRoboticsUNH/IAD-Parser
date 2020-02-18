@@ -128,6 +128,14 @@ def write_sparse_matrix(filename, sparse_map):
 
 	arr = [1,2,3]
 
+	arr = [len(sparse_map)]
+	for i, data in enumerate(sparse_map):
+		if(len(data) > 0):
+			line = [i]
+			for d in data:
+				line += [d[0], d[1]]
+			arr += line
+
 	ofile = open(filename, "wb")
 	ofile.write(pack('hhl', *arr))
 	ofile.close()
