@@ -174,6 +174,7 @@ def read_sparse_matrix(filename):
 			track = p1	
 		else:
 			sparse_map[track].append([p1,p2])
+	print(sparse_map)
 		
 	return sparse_map
 
