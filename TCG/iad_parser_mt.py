@@ -152,7 +152,7 @@ def read_sparse_matrix(filename):
 
 	sparse_map = [[] for x in range(num_features)]
 
-	for line in ifile:
+	for line in ifile[1:]:
 		print(line)
 		print([struct.unpack('@B', line[:-1])])
 		#print([struct.unpack('@B', x) for x in line[:-1]])
