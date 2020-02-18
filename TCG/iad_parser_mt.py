@@ -159,18 +159,23 @@ def read_sparse_matrix(filename):
 
 	f = open(filename,'rb')
 	sparse_map = None
+	track = -1
+	half_done = False
 	while True:
-		bin = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
-		if not bin:
+		b = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
+		if not b:
 			break
-		#if(sparse_map == None):
-		#	sparse_map = [[] for x in range(bin)]
-
-
-		#strBin = bstr(bin)
-		#binlist.append(strBin)
-		print(bin)
-	return binlist
+		if(sparse_map == None):
+			sparse_map = [[] for x in range(b)]
+		elif(track < 0):
+			track = b
+		else:
+			if(not half_done):
+				sparse_map[track].append([b,0])
+			else:
+				sparse_map[track][-1][1] = b
+		
+	return sparse_map
 
 
 	#x = unpack('I', ifile[0])
