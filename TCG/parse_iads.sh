@@ -3,4 +3,4 @@ python iad_parser_mt.py \
 	~/datasets/Something-Something/ \
 	~/datasets/Something-Something/ss.csv \
 	frames \
-	1
+	4
