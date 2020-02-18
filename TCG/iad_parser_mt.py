@@ -135,7 +135,7 @@ def write_sparse_matrix(filename, sparse_map):
 
 def read_sparse_matrix(filename):
 	sparse_map = []
-	for line in list(open(filename, "rb"))
+	for line in list(open(filename, "rb")):
 		data = [int(x) for x in line.split()]
 		sparse_map.append([(data[i], data[i+1]) for i in range(0, len(data), 2) ])
 	return sparse_map
