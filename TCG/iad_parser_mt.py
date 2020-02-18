@@ -214,7 +214,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	print("smx")
 	for i, l in enumerate(smx):
 
-		print(l)
+		print(i, l)
 	
 
 
