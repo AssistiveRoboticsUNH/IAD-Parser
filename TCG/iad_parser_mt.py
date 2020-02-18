@@ -147,7 +147,7 @@ def read_sparse_matrix(filename):
 	print(list(ifile))
 
 	num_features = ifile[0][0]
-	print("num_features:", num_features, struct.unpack('@', num_features))
+	print("num_features:", num_features, struct.unpack('>BB', num_features))
 
 	sparse_map = [[] for x in range(num_features)]
 	'''
