@@ -314,12 +314,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 	#combine chunked threshodl info together
 	threshold_matrix = np.zeros((depth_size, num_features))
+	threshold_count = np.zeros((depth_size, num_features))
 	for x in split_threshold_info:
 		for layer in range(depth_size):
 			for feature in range(num_features):
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
-				print(x[layer][feature].count)
-	threshold_matrix /= len(training_dataset)
+				threshold_count[layer, feature] += x[layer][feature].count
+	threshold_matrix /= threshold_count
 	print(threshold_matrix.shape)
 	print(threshold_matrix)
 	print(len(training_dataset))
