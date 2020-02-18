@@ -158,24 +158,18 @@ def read_sparse_matrix(filename):
 	#import struct
 
 	f = open(filename,'rb')
-	sparse_map = None
-	track = -1
-	half_done = False
+
+	num_features = int(unpack('I',f.read(4))[0])
+	sparse_map = [[] for x in range(num_features)]
+
 	while True:
-		b = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
-		if not b:
+		track = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
+		if not track:
 			break
 
-		print(b)	
-		if(sparse_map == None):
-			sparse_map = [[] for x in range(b)]
-		elif(track < 0):
-			track = b
-		else:
-			if(not half_done):
-				sparse_map[track].append([b,0])
-			else:
-				sparse_map[track][-1][1] = b
+		sparse_map[track].append([unpack('I',f.read(4))[0] for d in range(2)])
+
+
 		
 	return sparse_map
 
