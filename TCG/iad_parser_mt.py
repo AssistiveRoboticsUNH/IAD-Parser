@@ -127,7 +127,7 @@ def write_sparse_matrix(filename, sparse_map):
 	txt = ''
 	for i, data in enumerate(sparse_map):
 		for d in data:
-			txt += d[0]+' '+d[1]+' '
+			txt += '{0} {1} '.format(d[0],d[1])
 		txt += '\n'
 	ofile = open(filename, "wb")
 	ofile.write(bytearray(txt))
