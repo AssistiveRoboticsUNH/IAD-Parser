@@ -140,12 +140,14 @@ def write_sparse_matrix(filename, sparse_map):
 
 def read_sparse_matrix(filename):
 
+	import struct
+
 	ifile = list(open(filename, "rb"))
 	print("ifile:", ifile)
 	print(list(ifile))
 
 	num_features = ifile[0][0]
-	print("num_features:", num_features, int(num_features))
+	print("num_features:", num_features, struct.unpack('>HH', num_features), struct.unpack('<HH', num_features))
 
 	sparse_map = [[] for x in range(num_features)]
 	'''
