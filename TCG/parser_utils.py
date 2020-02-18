@@ -16,7 +16,6 @@ are start and stop indexes:
 (0 0) : (2 5) (12 15)     // Feature 0, start and stop times between 2 and 5 and 12 and 15
 (27 0) : (0 3) (14 18)    // Feature 27, start and stop times between 0 and 3 and 14 and 18
 (127 0) : (5 10)          // Feature 127, start and stop times between 5 and 10
-
 '''
 
 def write_sparse_matrix(filename, sparse_map):
