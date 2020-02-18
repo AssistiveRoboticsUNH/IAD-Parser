@@ -45,7 +45,7 @@ def preprocess(iad, layer):
 	# if the length of the IAD is atleast 10 then we trim the beginning and ending frames 
 	# to remove noise
 	if(iad.shape[1] > 10):
-	 	iad = iad[:, 3:-3]
+		iad = iad[:, 3:-3]
 
 	# use savgol filter to smooth the IAD
 	smooth_value = 25
@@ -158,19 +158,19 @@ def read_sparse_matrix(filename):
 	#import struct
 
 	f = open(filename,'rb')
-    sparse_map = None
-    while True:
-        bin = int(struct.unpack('I',f.read(1))[0]) # B stands for unsigned char (8 bits)
-        if not bin:
-            break
-        #if(sparse_map == None):
-        #	sparse_map = [[] for x in range(bin)]
+	sparse_map = None
+	while True:
+		bin = int(struct.unpack('I',f.read(1))[0]) # B stands for unsigned char (8 bits)
+		if not bin:
+			break
+		#if(sparse_map == None):
+		#	sparse_map = [[] for x in range(bin)]
 
 
-        #strBin = bstr(bin)
-        #binlist.append(strBin)
-        print(bin)
-    return binlist
+		#strBin = bstr(bin)
+		#binlist.append(strBin)
+		print(bin)
+	return binlist
 
 
 	#x = unpack('I', ifile[0])
