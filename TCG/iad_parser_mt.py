@@ -163,7 +163,7 @@ def read_sparse_matrix(filename):
 	print("num_features:", num_features)
 	track = -1
 	while True:
-		pair = int(unpack('II',f.read(8))[0]) # B stands for unsigned char (8 bits)
+		pair = unpack('II',f.read(8))[0] # B stands for unsigned char (8 bits)
 		print(pair)
 		if not pair:
 			break
