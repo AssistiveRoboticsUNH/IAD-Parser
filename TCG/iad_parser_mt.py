@@ -205,7 +205,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 		dataset_type_list.append("flow")
 
 	#get files from dataset
-	csv_contents = read_csv(csv_filename)[:23]
+	csv_contents = read_csv(csv_filename)
 	
 	for ex in csv_contents:
 		
