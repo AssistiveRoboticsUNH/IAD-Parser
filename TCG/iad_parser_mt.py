@@ -247,7 +247,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	threshold_matrix /= threshold_count
 	
 	#process the IADs and save the parsed files 
-	full_dataset = [csv_contents[0]]#[ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
+	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	other_args = [depth_size,dataset_type_list,threshold_matrix]
 	split_dataset_run_func(p, sparsify_iad_dataset, full_dataset, other_args)
 
