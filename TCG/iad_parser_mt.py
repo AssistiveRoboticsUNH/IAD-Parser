@@ -162,13 +162,12 @@ def read_sparse_matrix(filename):
 	sparse_map = [[] for x in range(num_features)]
 	track = -1
 	while True:
-		p1 = unpack('I',f.read(4))[0]
-		if not p1:
+		try:
+			p1 = unpack('I',f.read(4))[0]
+			p2 = unpack('I',f.read(4))[0]
+		except:
 			break
-		p2 = unpack('I',f.read(4))[0]
-		if not p2:
-			break
-
+		print(p1, p2)
 
 		if(p2 == 0):
 			track = p1	
