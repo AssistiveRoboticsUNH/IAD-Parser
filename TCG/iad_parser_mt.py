@@ -160,7 +160,7 @@ def read_sparse_matrix(filename):
 	f = open(filename,'rb')
 	sparse_map = None
 	while True:
-		bin = int(unpack('I',f.read(1))[0]) # B stands for unsigned char (8 bits)
+		bin = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
 		if not bin:
 			break
 		#if(sparse_map == None):
