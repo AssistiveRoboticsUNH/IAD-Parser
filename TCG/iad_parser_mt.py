@@ -6,14 +6,14 @@ import PIL.Image as Image
 
 from scipy.signal import savgol_filter
 
-from itertools import product
-from string import ascii_lowercase
+from parser_utils import write_sparse_matrix, 
 
 import sys, math
 sys.path.append("../../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
 from multiprocessing import Pool
+
 
 
 def open_iad(ex, dataset_type_list, layer, pruning_indexes=None):
@@ -57,26 +57,7 @@ def preprocess(iad, layer):
 			iad[i] = savgol_filter(iad[i], smooth_value, 3)
 
 	return iad
-'''
-def find_start_stop(feature, iad, threshold_value):
-	
-	# threshold the expression we are looking at
-	above_threshold = np.argwhere(feature > threshold_value).reshape(-1)
 
-	# identify the start and stop times of the events
-	start_stop_times = []
-	if(len(above_threshold) != 0):
-		start = above_threshold[0]
-		for i in range(1, len(above_threshold)):
-
-			if( above_threshold[i-1]+1 < above_threshold[i] ):
-				start_stop_times.append([start, above_threshold[i-1]+1])
-				start = above_threshold[i]
-
-		start_stop_times.append([start, above_threshold[len(above_threshold)-1]+1])
-
-	return start_stop_times
-'''
 def find_start_stop(feature_row):
 	
 	# identify the start and stop times of the events
@@ -93,7 +74,6 @@ def find_start_stop(feature_row):
 
 	return start_stop_times
 
-
 def postprocess(sparse_map, layer):
 	'''
 	Take a sparse map and offset it by three to account for the trimmed IAD.
@@ -107,13 +87,7 @@ def postprocess(sparse_map, layer):
 	for f, feat in enumerate(sparse_map):	
 		remove_pairs = []
 		for p, pair in enumerate(feat):
-			if pair[1]-pair[0] > noise_limit:
-
-				#offset accoridng to beginning and end trimming
-				pair[0] += 3 
-				pair[1] += 3 
-
-			else:
+			if pair[1]-pair[0] < noise_limit:
 				remove_pairs.append(pair)
 			
 		# remove pairs that are smaller than 3 in length
@@ -122,65 +96,13 @@ def postprocess(sparse_map, layer):
 		
 	return sparse_map
 
-from struct import *
-def write_sparse_matrix(filename, sparse_map):
-	
-	ofile = open(filename, "wb")
-	ofile.write(pack('I', len(sparse_map)))
-	for i, data in enumerate(sparse_map):
-		if(len(data) > 0):
-			ofile.write(pack('II', i, 0))
-			for d in data:
-				ofile.write(pack('II', d[0], d[1]))
-
-	ofile.close()
-
-
-	'''
-
-	ofile = open(filename, "wb")
-	print(len(sparse_map), bytearray([len(sparse_map)]))
-	print('newline', bytearray([1,2,3,'\n']))
-
-	ofile.write(bytearray([len(sparse_map), '\n']))
-	for i, data in enumerate(sparse_map):
-		if(len(data) > 0):
-			line = [i]
-			for d in data:
-				line += [d[0], d[1]]
-			line += '\n'
-			ofile.write(bytearray(line))
-	ofile.close()
-	'''
-def read_sparse_matrix(filename):
-
-	#import struct
-
-	f = open(filename,'rb')
-
-	num_features = int(unpack('I',f.read(4))[0])
-	sparse_map = [[] for x in range(num_features)]
-	track = -1
-	while True:
-		try:
-			p1 = unpack('I',f.read(4))[0]
-			p2 = unpack('I',f.read(4))[0]
-		except:
-			break
-
-		if(p2 == 0):
-			track = p1	
-		else:
-			sparse_map[track].append([p1,p2])
-		
-	return sparse_map
-
-
-def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
+def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.b"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
 	'''
+
+	# get threshold values
 	threshold_values = threshold_matrix[layer]
 
 	# open the IAD
@@ -189,38 +111,19 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 
 	# threshold, reverse the locations to account for the transpose
 	locs = np.where(iad.T > threshold_values)
-	#print(iad)
-	#print(locs)
 	locs = np.array( zip( locs[1], locs[0] ) )
 
+	# get the start and stop times for each feature in the IAD
 	sparse_map = []
 	for i in range(iad.shape[0]):
-		print( locs ) 
-		print( locs[np.where(locs[:,0] == i)] )
 		feature_times = locs[np.where(locs[:,0] == i)][:,1]
 		sparse_map.append( find_start_stop( feature_times ))
 	sparse_map = postprocess(sparse_map, layer)
 
-
 	# write start_stop_times to file.
-
-	print(ex['txt_path_{0}'.format(layer)])
-	write_sparse_matrix(ex['txt_path_{0}'.format(layer)], sparse_map)
-	for i, d in enumerate(sparse_map):
-		print(i, d)
+	print(ex['b_path_{0}'.format(layer)])
+	write_sparse_matrix(ex['b_path_{0}'.format(layer)], sparse_map)
 	
-	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
-
-	print("smx")
-	for i, l in enumerate(smx):
-
-		print(i, l)
-	
-
-
-
-	return
-
 def sparsify_iad_dataset(inp):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
@@ -320,12 +223,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				ex[iad_path] = os.path.join(dataset_dir, 'iad_{0}_{1}_{2}'.format(model_type, dtype, dataset_id), ex['label_name'], '{0}_{1}.npz'.format(ex['example_id'], layer))
 				assert os.path.exists(ex[iad_path]), "Cannot locate IAD file: "+ ex[iad_path]
 
-			#generate txt directory for write
-			txt_dir = os.path.join(dataset_dir, 'txt_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), ex['label_name']) 
-			if ( not os.path.exists(txt_dir) ):
-				os.makedirs(txt_dir)
-			txt_path = 'txt_path_{0}'.format(layer)
-			ex[txt_path] = os.path.join(txt_dir, '{0}_{1}.txt'.format(ex['example_id'], layer))
+			#generate binary directory for write
+			bin_dir = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), ex['label_name']) 
+			if ( not os.path.exists(bin_dir) ):
+				os.makedirs(bin_dir)
+			bin_path = 'b_path_{0}'.format(layer)
+			ex[bin_path] = os.path.join(bin_dir, '{0}_{1}.b'.format(ex['example_id'], layer))
 	
 	p = Pool(num_procs)
 
