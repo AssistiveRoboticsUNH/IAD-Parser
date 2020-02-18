@@ -139,8 +139,9 @@ def read_sparse_matrix(filename):
 
 	ifile = list(open(filename, "rb"))
 	num_features = list(ifile[0])
-	sparse_map = [[] for x in range(num_features)]
 	print(num_features)
+	
+	sparse_map = [[] for x in range(num_features)]
 	'''
 	for line in ifile[1:]:
 		data = [int(x) for x in line.split()]
