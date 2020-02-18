@@ -6,7 +6,7 @@ import PIL.Image as Image
 
 from scipy.signal import savgol_filter
 
-from parser_utils import write_sparse_matrix, 
+from parser_utils import write_sparse_matrix
 
 import sys, math
 sys.path.append("../../IAD-Generator/iad-generation/")
