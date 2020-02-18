@@ -160,7 +160,6 @@ def read_sparse_matrix(filename):
 
 	num_features = int(unpack('I',f.read(4))[0])
 	sparse_map = [[] for x in range(num_features)]
-	print("num_features:", num_features)
 	track = -1
 	while True:
 		p1 = unpack('I',f.read(4))[0]
@@ -178,38 +177,6 @@ def read_sparse_matrix(filename):
 		
 	return sparse_map
 
-
-	#x = unpack('I', ifile[0])
-	#print(x)
-
-	'''
-	ifile = open(filename, "rb")
-	for b in ifile:
-		print( b )
-		print( struct.unpack('@B', b ) )
-
-	'''
-	'''
-	ifile = list(open(filename, "rb"))
-	print("ifile:", ifile)
-	print(list(ifile))
-
-	num_features = struct.unpack('@B', ifile[0][0])[0]
-	print("num_features:", num_features, )
-
-	sparse_map = [[] for x in range(num_features)]
-
-	for line in ifile[1:]:
-		print(line)
-		print([struct.unpack('@B', line[:-1])])
-		#print([struct.unpack('@B', x) for x in line[:-1]])
-		#data = struct.unpack('@B', line[0])#[int(x) for x in line.split()]
-
-
-	'''
-		#sparse_map[(data[i], data[i+1]) for i in range(0, len(data), 2) ])
-	
-	return sparse_map
 
 def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
 	'''
