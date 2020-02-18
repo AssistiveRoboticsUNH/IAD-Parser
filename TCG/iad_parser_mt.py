@@ -318,6 +318,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 		for layer in range(depth_size):
 			for feature in range(num_features):
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
+				print(x[layer][feature].count)
 	threshold_matrix /= len(training_dataset)
 	print(threshold_matrix.shape)
 	print(threshold_matrix)
