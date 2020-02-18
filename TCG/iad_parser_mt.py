@@ -138,12 +138,14 @@ def write_sparse_matrix(filename, sparse_map):
 def read_sparse_matrix(filename):
 
 	ifile = list(open(filename, "rb"))
-	num_features = int(ifile[0])
+	num_features = list(ifile[0])
 	sparse_map = [[] for x in range(num_features)]
-
+	print(num_features)
+	'''
 	for line in ifile[1:]:
 		data = [int(x) for x in line.split()]
 		sparse_map.append([(data[i], data[i+1]) for i in range(0, len(data), 2) ])
+	'''
 	return sparse_map
 
 def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
