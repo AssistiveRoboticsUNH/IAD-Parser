@@ -146,15 +146,18 @@ def read_sparse_matrix(filename):
 	print("ifile:", ifile)
 	print(list(ifile))
 
-	num_features = ifile[0][0]
-	print("num_features:", num_features, struct.unpack('@B', num_features))
+	num_features = struct.unpack('@B', ifile[0][0])[0]
+	print("num_features:", num_features, )
 
 	sparse_map = [[] for x in range(num_features)]
-	'''
+
 	for line in ifile[1:]:
-		data = [int(x) for x in line.split()]
-		sparse_map.append([(data[i], data[i+1]) for i in range(0, len(data), 2) ])
-	'''
+		data = struct.unpack('@B', line)#[int(x) for x in line.split()]
+
+
+
+		#sparse_map[(data[i], data[i+1]) for i in range(0, len(data), 2) ])
+	
 	return sparse_map
 
 def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
