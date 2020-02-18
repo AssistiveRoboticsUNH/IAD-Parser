@@ -157,7 +157,7 @@ def read_sparse_matrix(filename):
 
 	#import struct
 	ifile = open(filename, "rb").read()
-	print(ifile)
+	print(bytearray(ifile))
 	x = unpack('I', ifile[0])
 	print(x)
 
