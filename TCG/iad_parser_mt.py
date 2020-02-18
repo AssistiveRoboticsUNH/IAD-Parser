@@ -130,6 +130,7 @@ def write_sparse_matrix(filename, sparse_map):
 			txt += '{0} {1} '.format(d[0],d[1])
 		txt += '\n'
 	ofile = open(filename, "wb")
+	print(bytearray(txt))
 	ofile.write(bytearray(txt))
 	ofile.close()
 
