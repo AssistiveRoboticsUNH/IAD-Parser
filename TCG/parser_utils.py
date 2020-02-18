@@ -1,5 +1,3 @@
-from struct import pack, unpack
-
 '''
 Binary format:
 first value is the number of features
@@ -17,6 +15,8 @@ are start and stop indexes:
 (27 0) : (0 3) (14 18)    // Feature 27, start and stop times between 0 and 3 and 14 and 18
 (127 0) : (5 10)          // Feature 127, start and stop times between 5 and 10
 '''
+
+from struct import pack, unpack
 
 def write_sparse_matrix(filename, sparse_map):
 	
