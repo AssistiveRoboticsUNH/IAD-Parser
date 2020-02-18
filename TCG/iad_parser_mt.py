@@ -146,7 +146,8 @@ def read_sparse_matrix(filename):
 
 	ifile = open(filename, "rb")
 	for b in ifile:
-		print( b, struct.unpack('@B', b ) )
+		print( b )
+		print( struct.unpack('@B', b ) )
 
 	'''
 
