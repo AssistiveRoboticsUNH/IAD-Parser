@@ -153,6 +153,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 
 	# threshold, reverse the locations to account for the transpose
 	locs = np.where(iad.T > threshold_values)
+	print(iad)
 	print(locs)
 	locs = np.array( zip( locs[1], locs[0] ) )
 
