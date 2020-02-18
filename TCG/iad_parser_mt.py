@@ -152,7 +152,8 @@ def write_sparse_matrix(filename, sparse_map):
 def read_sparse_matrix(filename):
 
 	#import struct
-	unpack('hhl', open(filename, "rb").read())
+	x = unpack('hhl', open(filename, "rb").read())
+	print(x)
 
 	'''
 	ifile = open(filename, "rb")
