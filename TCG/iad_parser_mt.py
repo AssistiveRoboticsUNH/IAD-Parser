@@ -126,6 +126,7 @@ def postprocess(sparse_map, layer):
 def write_sparse_matrix(filename, sparse_map):
 	
 	ofile = open(filename, "wb")
+	print(len(sparse_map), bytearray(len(sparse_map)))
 	ofile.write(bytearray([len(sparse_map)]))
 	for i, data in enumerate(sparse_map):
 		if(len(data) > 0):
