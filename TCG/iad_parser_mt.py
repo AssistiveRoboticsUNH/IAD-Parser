@@ -167,13 +167,11 @@ def read_sparse_matrix(filename):
 			p2 = unpack('I',f.read(4))[0]
 		except:
 			break
-		print(p1, p2)
 
 		if(p2 == 0):
 			track = p1	
 		else:
 			sparse_map[track].append([p1,p2])
-	print(sparse_map)
 		
 	return sparse_map
 
@@ -214,7 +212,9 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
 
 	print("smx")
-	print(smx)
+	for l in smx:
+
+		print(l)
 	
 
 
