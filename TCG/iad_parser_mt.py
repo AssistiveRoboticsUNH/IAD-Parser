@@ -137,7 +137,8 @@ def write_sparse_matrix(filename, sparse_map):
 
 def read_sparse_matrix(filename):
 
-	ifile = list(open(filename, "rb"))
+	ifile = open(filename, "rb")
+	print("ifile:", ifile)
 	num_features = list(ifile[0])
 	print("num_features:", num_features)
 
