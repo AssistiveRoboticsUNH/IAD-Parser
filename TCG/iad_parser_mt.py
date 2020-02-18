@@ -212,7 +212,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
 
 	print("smx")
-	for l in smx:
+	for i, l in enumerate(smx):
 
 		print(l)
 	
