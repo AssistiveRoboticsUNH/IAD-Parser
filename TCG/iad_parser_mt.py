@@ -129,8 +129,7 @@ def write_sparse_matrix(filename, sparse_map):
 	ofile.write(pack('I', len(sparse_map)))
 	for i, data in enumerate(sparse_map):
 		if(len(data) > 0):
-			line = [i]
-			ofile.write(pack('I', i))
+			ofile.write(pack('II', i, 0))
 			for d in data:
 				ofile.write(pack('II', d[0], d[1]))
 
@@ -161,15 +160,18 @@ def read_sparse_matrix(filename):
 
 	num_features = int(unpack('I',f.read(4))[0])
 	sparse_map = [[] for x in range(num_features)]
-
+	print("num_features":, num_features)
+	track = -1
 	while True:
-		track = int(unpack('I',f.read(4))[0]) # B stands for unsigned char (8 bits)
-		if not track:
+		pair = int(unpack('II',f.read(4))[0]) # B stands for unsigned char (8 bits)
+		
+		if not pair:
 			break
 
-		sparse_map[track].append([unpack('I',f.read(4))[0] for d in range(2)])
-
-
+		if(pair[1] == 0):
+			track = pair[0]	
+		else:
+			sparse_map[track].append(pair)
 		
 	return sparse_map
 
