@@ -124,8 +124,9 @@ def postprocess(sparse_map, layer):
 
 
 def write_sparse_matrix(filename, sparse_map):
-	'''
+	
 	ofile = open(filename, "wb")
+	ofile.write(bytearray([len(sparse_map)]))
 	for i, data in enumerate(sparse_map):
 		if(len(data) > 0):
 			line = [i]
@@ -133,21 +134,14 @@ def write_sparse_matrix(filename, sparse_map):
 				line += [d[0], d[1]]
 			ofile.write(bytearray(line))
 	ofile.close()
-	'''
-	txt = ''
-	for i, data in enumerate(sparse_map):
-		for d in data:
-			txt += '{0} {1} '.format(d[0],d[1])
-		txt += '\n'
-	ofile = open(filename, "wb")
-	print(bytearray(txt))
-	ofile.write(bytearray(txt))
-	ofile.close()
-	
 
 def read_sparse_matrix(filename):
-	sparse_map = []
-	for line in list(open(filename, "rb")):
+
+	ifile = list(open(filename, "rb"))
+	num_features = int(ifile[0])
+	sparse_map = [[] for x in range(num_features)]
+
+	for line in ifile[1:]:
 		data = [int(x) for x in line.split()]
 		sparse_map.append([(data[i], data[i+1]) for i in range(0, len(data), 2) ])
 	return sparse_map
@@ -183,12 +177,12 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	print(ex['txt_path_{0}'.format(layer)])
 	write_sparse_matrix(ex['txt_path_{0}'.format(layer)], sparse_map)
 	
-	'''
+	
 	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
 
 	print("smx")
 	print(smx)
-	'''
+	
 
 
 
