@@ -129,7 +129,7 @@ def write_sparse_matrix(filename, sparse_map):
 	print(len(sparse_map), bytearray([len(sparse_map)]))
 	print('newline', bytearray([1,2,3,'\n']))
 
-	ofile.write(bytearray([len(sparse_map)]))
+	ofile.write(bytearray([len(sparse_map), '\n']))
 	for i, data in enumerate(sparse_map):
 		if(len(data) > 0):
 			line = [i]
@@ -143,7 +143,7 @@ def read_sparse_matrix(filename):
 	ifile = list(open(filename, "rb"))
 	print("ifile:", ifile)
 	print(list(ifile))
-	
+
 	num_features = list(ifile[0][0])
 	print("num_features:", num_features)
 
