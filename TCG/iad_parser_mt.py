@@ -57,7 +57,7 @@ def preprocess(iad, layer):
 			iad[i] = savgol_filter(iad[i], smooth_value, 3)
 
 	return iad
-
+'''
 def find_start_stop(feature, iad, threshold_value):
 	
 	# threshold the expression we are looking at
@@ -70,6 +70,22 @@ def find_start_stop(feature, iad, threshold_value):
 		for i in range(1, len(above_threshold)):
 
 			if( above_threshold[i-1]+1 < above_threshold[i] ):
+				start_stop_times.append([start, above_threshold[i-1]+1])
+				start = above_threshold[i]
+
+		start_stop_times.append([start, above_threshold[len(above_threshold)-1]+1])
+
+	return start_stop_times
+'''
+def find_start_stop(feature_row):
+	
+	# identify the start and stop times of the events
+	start_stop_times = []
+	if(len(feature_row) != 0):
+		start = feature_row[0]
+		for i in range(1, len(feature_row)):
+
+			if( feature_row[i-1]+1 < feature_row[i] ):
 				start_stop_times.append([start, above_threshold[i-1]+1])
 				start = above_threshold[i]
 
@@ -107,8 +123,22 @@ def postprocess(sparse_map, layer):
 	return sparse_map
 
 
+def write_sparse_matrix(filename, sparse_map):
+	txt = ''
+	for i, data in enumerate(sparse_map):
+		for d in data:
+			txt += d[0]+' '+d[1]+' '
+		txt += '\n'
+	ofile = open(filename, "wb")
+	ofile.write(bytearray(txt))
+	ofile.close()
 
-
+def read_sparse_matrix(filename):
+	sparse_map = []
+	for line in list(open(filename, "rb"))
+		data = [int(x) for x in line.split()]
+		sparse_map.append([(data[i], data[i+1]) for i in range(0, len(data), 2) ])
+	return sparse_map
 
 def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.txt"):
 	'''
@@ -121,17 +151,29 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	iad = open_iad(ex, dataset_type_list, layer)
 	iad = preprocess(iad, layer)
 
-	print("binarized_iad:", iad.shape)
-	binarized_iad = (iad.T > threshold_values).T
-	print("binarized_iad:", binarized_iad.shape)
+	# threshold, reverse the locations to account for the transpose
+	locs = np.where(iad.T > threshold_values)
+	locs = zip( locs[1], locs[0] )
 
-	'''
 	sparse_map = []
-	for i, feature in enumerate(iad):
-		
-		sparse_map.append(find_start_stop(feature, iad, threshold_value))
+	for i in range(iad.shape[0]):
+		sparse_map.append( find_start_stop( locs[np.where(locs[:,0] == i)][:,1] ))
 	sparse_map = postprocess(sparse_map, layer)
 
+
+	# write start_stop_times to file.
+
+	print(ex['txt_path_{0}'.format(layer)])
+	write_sparse_map(ex['txt_path_{0}'.format(layer)], sparse_map)
+	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
+
+	print(smx)
+
+
+
+
+
+	'''
 	# write start_stop_times to file. Each feature is given a unique 3 char  
 	# alphabetical code to identify it. This should cover up to 17K unique
 	# features
