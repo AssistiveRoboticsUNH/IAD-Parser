@@ -124,6 +124,16 @@ def postprocess(sparse_map, layer):
 
 
 def write_sparse_matrix(filename, sparse_map):
+
+	ofile = open(filename, "wb")
+	for i, data in enumerate(sparse_map):
+		if(len(data) > 0):
+			line = [i]
+			for d in data:
+				line += [d[0], d[1]]
+			ofile.write(bytearray(line))
+	ofile.close()
+	'''
 	txt = ''
 	for i, data in enumerate(sparse_map):
 		for d in data:
@@ -133,6 +143,7 @@ def write_sparse_matrix(filename, sparse_map):
 	print(bytearray(txt))
 	ofile.write(bytearray(txt))
 	ofile.close()
+	'''
 
 def read_sparse_matrix(filename):
 	sparse_map = []
@@ -171,33 +182,16 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 
 	print(ex['txt_path_{0}'.format(layer)])
 	write_sparse_matrix(ex['txt_path_{0}'.format(layer)], sparse_map)
+	
+	'''
 	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
 
 	print("smx")
 	print(smx)
-
-
-
-
-
 	'''
-	# write start_stop_times to file. Each feature is given a unique 3 char  
-	# alphabetical code to identify it. This should cover up to 17K unique
-	# features
-	ofile = open(name, 'w')
-	action_labels = [''.join(i) for i in product(ascii_lowercase, repeat = 3)]
 
-	for f, feat in enumerate(sparse_map):
-		action = action_labels[f]
 
-		for p, pair in enumerate(feat):
-			ofile.write("{0}_{1}_{2} {3}\n".format(action, p, 's', pair[0]))
-			ofile.write("{0}_{1}_{2} {3}\n".format(action, p, 'e', pair[1]))
 
-	ofile.close()
-
-	return sparse_map
-	'''
 	return
 
 def sparsify_iad_dataset(inp):
