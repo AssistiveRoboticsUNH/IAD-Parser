@@ -156,10 +156,25 @@ def write_sparse_matrix(filename, sparse_map):
 def read_sparse_matrix(filename):
 
 	#import struct
-	ifile = open(filename, "rb").read()
-	print(bytearray(ifile))
-	x = unpack('I', ifile[0])
-	print(x)
+
+	f = open(filename,'rb')
+    sparse_map = None
+    while True:
+        bin = int(struct.unpack('I',f.read(1))[0]) # B stands for unsigned char (8 bits)
+        if not bin:
+            break
+        #if(sparse_map == None):
+        #	sparse_map = [[] for x in range(bin)]
+
+
+        #strBin = bstr(bin)
+        #binlist.append(strBin)
+        print(bin)
+    return binlist
+
+
+	#x = unpack('I', ifile[0])
+	#print(x)
 
 	'''
 	ifile = open(filename, "rb")
