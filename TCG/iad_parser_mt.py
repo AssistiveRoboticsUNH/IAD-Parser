@@ -321,9 +321,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
 	threshold_matrix /= threshold_count
-	print(threshold_matrix.shape)
-	print(threshold_matrix)
-	print(len(training_dataset))
 	
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
