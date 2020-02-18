@@ -154,8 +154,9 @@ def read_sparse_matrix(filename):
 
 	for line in ifile:
 		print(line)
-		print([struct.unpack('@B', x) for x in line])
-		data = struct.unpack('@B', line[0])#[int(x) for x in line.split()]
+		print([struct.unpack('@B', line[:-1])])
+		#print([struct.unpack('@B', x) for x in line[:-1]])
+		#data = struct.unpack('@B', line[0])#[int(x) for x in line.split()]
 
 
 
