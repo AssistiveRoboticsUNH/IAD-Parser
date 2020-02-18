@@ -125,19 +125,15 @@ def postprocess(sparse_map, layer):
 from struct import *
 def write_sparse_matrix(filename, sparse_map):
 	
-
-	arr = [1,2,3]
-
-	arr = [len(sparse_map)]
+	ofile = open(filename, "wb")
+	ofile.write(pack('I', len(sparse_map)))
 	for i, data in enumerate(sparse_map):
 		if(len(data) > 0):
 			line = [i]
+			ofile.write(pack('I', i))
 			for d in data:
-				line += [d[0], d[1]]
-			arr += line
+				ofile.write(pack('II', d[0], d[1]))
 
-	ofile = open(filename, "wb")
-	ofile.write(pack('I'*len(arr), *arr))
 	ofile.close()
 
 
@@ -160,7 +156,8 @@ def write_sparse_matrix(filename, sparse_map):
 def read_sparse_matrix(filename):
 
 	#import struct
-	x = unpack('hhl', open(filename, "rb").read())
+	ifile = open(filename, "rb").read()
+	x = unpack('I', ifile)
 	print(x)
 
 	'''
