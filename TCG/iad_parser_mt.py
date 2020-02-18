@@ -118,7 +118,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	threshold_values = threshold_matrix[layer]
 
 	# open the IAD
-	iad = open_iads(ex, dataset_type_list, layer)
+	iad = open_iad(ex, dataset_type_list, layer)
 	iad = preprocess(iad, layer)
 
 	print("binarized_iad:", iad.shape)
