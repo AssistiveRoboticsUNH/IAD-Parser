@@ -137,7 +137,7 @@ def write_sparse_matrix(filename, sparse_map):
 			arr += line
 
 	ofile = open(filename, "wb")
-	ofile.write(pack('hhl', *arr))
+	ofile.write(pack('I'*len(arr), *arr))
 	ofile.close()
 
 
