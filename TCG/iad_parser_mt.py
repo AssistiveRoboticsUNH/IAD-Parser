@@ -146,9 +146,9 @@ def read_sparse_matrix(filename):
 
 	ifile = open(filename, "rb")
 	for b in ifile:
-		print( struct.unpack('@B', b ) )
+		print( b, struct.unpack('@B', b ) )
 
-
+	'''
 
 	ifile = list(open(filename, "rb"))
 	print("ifile:", ifile)
@@ -166,7 +166,7 @@ def read_sparse_matrix(filename):
 		#data = struct.unpack('@B', line[0])#[int(x) for x in line.split()]
 
 
-
+	'''
 		#sparse_map[(data[i], data[i+1]) for i in range(0, len(data), 2) ])
 	
 	return sparse_map
