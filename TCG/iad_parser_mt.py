@@ -212,8 +212,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	
 	for ex in csv_contents:
 		
-		print(ex['example_id'])
-		
 		for layer in range(depth_size):
 
 			#get IAD files for read
