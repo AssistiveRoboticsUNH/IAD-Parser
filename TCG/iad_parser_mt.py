@@ -86,10 +86,10 @@ def find_start_stop(feature_row):
 		for i in range(1, len(feature_row)):
 
 			if( feature_row[i-1]+1 < feature_row[i] ):
-				start_stop_times.append([start, above_threshold[i-1]+1])
-				start = above_threshold[i]
+				start_stop_times.append([start, feature_row[i-1]+1])
+				start = feature_row[i]
 
-		start_stop_times.append([start, above_threshold[len(above_threshold)-1]+1])
+		start_stop_times.append([start, feature_row[len(feature_row)-1]+1])
 
 	return start_stop_times
 
@@ -172,6 +172,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.tx
 	write_sparse_map(ex['txt_path_{0}'.format(layer)], sparse_map)
 	smx = read_sparse_matrix(ex['txt_path_{0}'.format(layer)])
 
+	print("smx")
 	print(smx)
 
 
