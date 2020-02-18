@@ -14,8 +14,6 @@ from csv_utils import read_csv
 
 from multiprocessing import Pool
 
-
-
 def open_iad(ex, dataset_type_list, layer, pruning_indexes=None):
 
 	# open the IAD and prune any un-wanted features
@@ -200,7 +198,6 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	if(model_type == 'tsm'):
 		from tsm_wrapper import depth_size
 
-	
 	dataset_type_list = []
 	if(dataset_type=="frames" or dataset_type=="both"):
 		dataset_type_list.append("frames")
@@ -245,15 +242,13 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
 	threshold_matrix /= threshold_count
+
+	np.save(os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id)), 'threshold_values.npy')
 	
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	other_args = [depth_size,dataset_type_list,threshold_matrix]
 	split_dataset_run_func(p, sparsify_iad_dataset, full_dataset, other_args)
-
-
-
-
 
 if __name__ == '__main__':
 	import argparse
