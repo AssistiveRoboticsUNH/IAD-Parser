@@ -136,7 +136,7 @@ def sparsify_iad_dataset(inp):
 	for layer in range(depth_size):
 		for j, ex in enumerate(csv_dataset):
 			if(j %100 == 0):
-				print("layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
+				print("Gen binary: layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
 			sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features)
 
 
@@ -169,7 +169,7 @@ def determine_threshold(inp):
 
 		for j, ex in enumerate(csv_dataset):
 			if(j %100 == 0):
-				print("layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
+				print("Gen threshold: layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
 
 			# open IAD
 			iad = open_iad(ex, dataset_type_list, layer)
