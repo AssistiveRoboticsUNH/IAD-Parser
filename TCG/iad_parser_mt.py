@@ -244,7 +244,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	#get the threshold values for each feature in the training dataset
 	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 	other_args = [DEPTH_SIZE,dataset_type_list,num_features]
-	
+	'''
 	print("Getting Threshold")
 	split_threshold_info = split_dataset_run_func(p, determine_threshold, training_dataset, other_args)
 
@@ -259,12 +259,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	threshold_count[np.where(threshold_count == 0)] = 1
 
 	threshold_matrix /= threshold_count
-
+	'''
 	filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'threshold_values.npy')
-	np.save(filename, threshold_matrix)
+	#np.save(filename, threshold_matrix)
 	
 	assert os.path.exists(filename), "filename cannot be found: "+filename
-	#threshold_matrix = np.load(filename)
+	threshold_matrix = np.load(filename)
 
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
