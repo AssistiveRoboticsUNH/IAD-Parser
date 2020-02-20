@@ -229,9 +229,10 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	p = Pool(num_procs)
 
 	#get the threshold values for each feature in the training dataset
-	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:20]
+	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 	other_args = [depth_size,dataset_type_list,num_features]
 
+	print("Getting Threshold")
 	split_threshold_info = split_dataset_run_func(p, determine_threshold, training_dataset, other_args)
 
 	#combine chunked threshodl info together
@@ -249,6 +250,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	other_args = [depth_size,dataset_type_list,threshold_matrix]
+	print("Converting to Binary")
 	split_dataset_run_func(p, sparsify_iad_dataset, full_dataset, other_args)
 
 if __name__ == '__main__':
