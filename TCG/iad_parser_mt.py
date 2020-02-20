@@ -163,7 +163,8 @@ def determine_threshold(inp):
 	for layer in range(depth_size):
 		local_threshold = [Avg() for i in range(num_features)]
 
-		for ex in csv_dataset:
+		for i, ex in enumerate(csv_dataset):
+			print("layer: {0}, csv_idx {1}/{2}".format(layer, i, len(csv_contents)))
 
 			# open IAD
 			iad = open_iad(ex, dataset_type_list, layer)
