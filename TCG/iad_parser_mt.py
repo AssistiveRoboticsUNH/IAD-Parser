@@ -115,7 +115,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 	# get the start and stop times for each feature in the IAD
 	sparse_map = []
 	for i in range(iad.shape[0]):
-		assert len(locs) != 0, "ERROR: couldn't find Locs: " + ex["example_id"]
+		assert len(locs) != 0, "ERROR: couldn't find Locs: " + ex["iad_path_frames_"+str(layer)]
 
 		feature_times = locs[np.where(locs[:,0] == i)][:,1]
 		sparse_map.append( find_start_stop( feature_times ))
