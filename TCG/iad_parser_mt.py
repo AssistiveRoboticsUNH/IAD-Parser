@@ -124,7 +124,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 	#sparse_map = postprocess(sparse_map, layer)
 
 	# write start_stop_times to file.
-	print(ex['b_path_{0}'.format(layer)])
+	#print(ex['b_path_{0}'.format(layer)])
 	write_sparse_matrix(ex['b_path_{0}'.format(layer)], sparse_map)
 	
 def sparsify_iad_dataset(inp):
@@ -136,7 +136,9 @@ def sparsify_iad_dataset(inp):
 	csv_dataset, depth_size, dataset_type_list, threshold_matrix, num_features = inp
 
 	for layer in range(depth_size):
-		for ex in csv_dataset:
+		for j, ex in enumerate(csv_dataset):
+			if(j %100 == 0):
+				print("layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
 			sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features)
 
 
@@ -258,24 +260,20 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				threshold_count[layer, feature] += x[layer][feature].count
 	threshold_count[np.where(threshold_count == 0)] = 1
 
-	print(threshold_count)
-
 	threshold_matrix /= threshold_count
 
 	filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'threshold_values.npy')
 	np.save(filename, threshold_matrix)
 	
 	assert os.path.exists(filename), "filename cannot be found: "+filename
-	threshold_matrix = np.load(filename)
+	#threshold_matrix = np.load(filename)
 
-	print(threshold_matrix)
-	
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
 	other_args = [DEPTH_SIZE,dataset_type_list,threshold_matrix, num_features]
 	print("Converting to Binary")
 	split_dataset_run_func(p, sparsify_iad_dataset, full_dataset, other_args)
-
+	
 if __name__ == '__main__':
 	import argparse
 	parser = argparse.ArgumentParser(description='Generate IADs from input files')
