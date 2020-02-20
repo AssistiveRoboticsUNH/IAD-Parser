@@ -165,7 +165,7 @@ def determine_threshold(inp):
 
 		for i, ex in enumerate(csv_dataset):
 			if(i %100 == 0):
-				print("layer: {0}, csv_idx {1}/{2}".format(layer, i, len(csv_dataset)))
+				print("layer: {0}, csv_idx {1}/{2}".format(layer, i, len(csv_dataset)) )
 
 			# open IAD
 			iad = open_iad(ex, dataset_type_list, layer)
