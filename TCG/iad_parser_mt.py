@@ -231,7 +231,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	p = Pool(num_procs)
 
 	#get the threshold values for each feature in the training dataset
-	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
+	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:100]
 	other_args = [depth_size,dataset_type_list,num_features]
 
 	print("Getting Threshold")
@@ -245,6 +245,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 			for feature in range(num_features):
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
+
 	threshold_matrix /= threshold_count
 
 	np.save(os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id)), 'threshold_values.npy')
