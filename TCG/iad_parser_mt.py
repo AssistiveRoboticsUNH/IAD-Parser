@@ -129,11 +129,11 @@ def sparsify_iad_dataset(inp):
 	when a feature is expressed. Write the map to a file.
 	'''
 
-	csv_dataset, depth_size, dataset_type_list, threshold_matrix = inp
+	csv_dataset, depth_size, dataset_type_list, threshold_matrix, num_features = inp
 
 	for layer in range(depth_size):
 		for ex in csv_dataset:
-			sparsify_iad(ex, layer, dataset_type_list, threshold_matrix)
+			sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features)
 
 
 class Avg:
