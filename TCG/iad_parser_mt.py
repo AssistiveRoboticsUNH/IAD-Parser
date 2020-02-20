@@ -164,7 +164,7 @@ def determine_threshold(inp):
 		local_threshold = []#[Avg() for i in range(num_features)]
 
 		for j, ex in enumerate(csv_dataset):
-			if(i %100 == 0):
+			if(j %100 == 0):
 				print("layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
 
 			# open IAD
