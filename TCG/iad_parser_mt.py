@@ -42,6 +42,7 @@ def preprocess(iad, layer):
 
 	# if the length of the IAD is atleast 10 then we trim the beginning and ending frames 
 	# to remove noise
+	
 	if(iad.shape[1] > 10):
 		iad = iad[:, 3:-3]
 
@@ -49,7 +50,7 @@ def preprocess(iad, layer):
 	smooth_value = 25
 	if(layer >= 1):
 		smooth_value = 35
-
+	
 	if(iad.shape[1] > smooth_value):
 		for i in range(iad.shape[0]):
 			iad[i] = savgol_filter(iad[i], smooth_value, 3)
@@ -105,7 +106,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.b"
 
 	# open the IAD
 	iad = open_iad(ex, dataset_type_list, layer)
-	iad = preprocess(iad, layer)
+	#iad = preprocess(iad, layer)
 
 	# threshold, reverse the locations to account for the transpose
 	locs = np.where(iad.T > threshold_values)
@@ -116,7 +117,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.b"
 	for i in range(iad.shape[0]):
 		feature_times = locs[np.where(locs[:,0] == i)][:,1]
 		sparse_map.append( find_start_stop( feature_times ))
-	sparse_map = postprocess(sparse_map, layer)
+	#sparse_map = postprocess(sparse_map, layer)
 
 	# write start_stop_times to file.
 	print(ex['b_path_{0}'.format(layer)])
