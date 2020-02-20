@@ -238,7 +238,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 
 	#get the threshold values for each feature in the training dataset
-	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:100]
+	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id]
 	other_args = [DEPTH_SIZE,dataset_type_list,num_features]
 
 	print("Getting Threshold")
