@@ -95,14 +95,14 @@ def postprocess(sparse_map, layer):
 		
 	return sparse_map
 
-def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, name="output.b"):
+def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, name="output.b"):
 	'''
 	Convert an IAD into a sparse map that indicates the start and stop times 
 	when a feature is expressed. Write the map to a file.
 	'''
 
 	# get threshold values
-	threshold_values = threshold_matrix[layer]
+	threshold_values = threshold_matrix[layer][:num_features[layer]]
 
 	# open the IAD
 	iad = open_iad(ex, dataset_type_list, layer)
@@ -161,7 +161,7 @@ def determine_threshold(inp):
 
 	threshold = []
 	for layer in range(depth_size):
-		local_threshold = []#[Avg() for i in range(num_features)]
+		local_threshold = [Avg() for i in range(num_features[layer])]
 
 		for j, ex in enumerate(csv_dataset):
 			if(j %100 == 0):
@@ -170,8 +170,8 @@ def determine_threshold(inp):
 			# open IAD
 			iad = open_iad(ex, dataset_type_list, layer)
 
-			if(len(local_threshold) == 0):
-				local_threshold = [Avg() for n in range(iad.shape[0])]
+			#if(len(local_threshold) == 0):
+			#	local_threshold = [Avg() for n in range(iad.shape[0])]
 
 			#update local averages
 			for i, f in enumerate(iad):
@@ -195,14 +195,14 @@ def split_dataset_run_func(p, func, dataset, other_args):
 	return p.map(func, inputs)
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, 
-	num_features, num_procs):
+	max_features, num_procs):
 
 	if(model_type == 'i3d'):
-		from gi3d_wrapper import depth_size
+		from gi3d_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(model_type == 'trn'):
-		from trn_wrapper import depth_size
+		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(model_type == 'tsm'):
-		from tsm_wrapper import depth_size
+		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 	dataset_type_list = []
 	if(dataset_type=="frames" or dataset_type=="both"):
@@ -212,10 +212,12 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 	#get files from dataset
 	csv_contents = read_csv(csv_filename)
+	num_features = [min(feat_num, max_features) for feat_num in CNN_FEATURE_COUNT]
+
 	
 	for ex in csv_contents:
 		
-		for layer in range(depth_size):
+		for layer in range(DEPTH_SIZE):
 
 			#get IAD files for read
 			for dtype in dataset_type_list:
@@ -230,22 +232,24 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				os.makedirs(bin_dir)
 			bin_path = 'b_path_{0}'.format(layer)
 			ex[bin_path] = os.path.join(bin_dir, '{0}_{1}.b'.format(ex['example_id'], layer))
-	
+
+
 	p = Pool(num_procs)
+
 
 	#get the threshold values for each feature in the training dataset
 	training_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id][:100]
-	other_args = [depth_size,dataset_type_list,num_features]
+	other_args = [DEPTH_SIZE,dataset_type_list,num_features]
 
 	print("Getting Threshold")
 	split_threshold_info = split_dataset_run_func(p, determine_threshold, training_dataset, other_args)
 
 	#combine chunked threshodl info together
-	threshold_matrix = np.zeros((depth_size, num_features))
-	threshold_count = np.zeros((depth_size, num_features))
+	threshold_matrix = np.zeros((DEPTH_SIZE, max_features))
+	threshold_count = np.zeros((DEPTH_SIZE, max_features))
 	for x in split_threshold_info:
-		for layer in range(depth_size):
-			for feature in range(num_features):
+		for layer in range(DEPTH_SIZE):
+			for feature in range(max_features):
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
 
@@ -255,7 +259,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
-	other_args = [depth_size,dataset_type_list,threshold_matrix]
+	other_args = [DEPTH_SIZE,dataset_type_list,threshold_matrix, num_features]
 	print("Converting to Binary")
 	split_dataset_run_func(p, sparsify_iad_dataset, full_dataset, other_args)
 
