@@ -257,7 +257,9 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 	np.save(os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id)), 'threshold_values.npy')
 	'''
-	threshold_matrix = np.load(os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id)), 'threshold_values.npy')
+	filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id)), 'threshold_values.npy'
+	assert os.path.exists(filename), "filename cannot be found: "+filename
+	threshold_matrix = np.load(filename)
 
 	#process the IADs and save the parsed files 
 	full_dataset = [ex for ex in csv_contents if ex['dataset_id'] >= dataset_id or ex['dataset_id'] == 0]
