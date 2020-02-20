@@ -163,9 +163,9 @@ def determine_threshold(inp):
 	for layer in range(depth_size):
 		local_threshold = [Avg() for i in range(num_features)]
 
-		for i, ex in enumerate(csv_dataset):
+		for j, ex in enumerate(csv_dataset):
 			if(i %100 == 0):
-				print("layer: {0}, csv_idx {1}/{2}".format(layer, i, len(csv_dataset)) )
+				print("layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
 
 			# open IAD
 			iad = open_iad(ex, dataset_type_list, layer)
@@ -245,6 +245,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 			for feature in range(num_features):
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
+	threshold_count[np.where(threshold_count == 0)] = 1
 
 	threshold_matrix /= threshold_count
 
