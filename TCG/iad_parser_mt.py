@@ -115,8 +115,12 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 	# get the start and stop times for each feature in the IAD
 	sparse_map = []
 	for i in range(iad.shape[0]):
-		feature_times = locs[np.where(locs[:,0] == i)][:,1]
-		sparse_map.append( find_start_stop( feature_times ))
+		try:
+			feature_times = locs[np.where(locs[:,0] == i)][:,1]
+			sparse_map.append( find_start_stop( feature_times ))
+		except:
+			print("locs:")
+			print(locs)
 	#sparse_map = postprocess(sparse_map, layer)
 
 	# write start_stop_times to file.
@@ -253,6 +257,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
 				threshold_count[layer, feature] += x[layer][feature].count
 	threshold_count[np.where(threshold_count) == 0] = 1
+
+	print(threshold_count)
 
 	threshold_matrix /= threshold_count
 
