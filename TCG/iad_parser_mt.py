@@ -112,14 +112,17 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 	locs = np.where(iad.T > threshold_values)
 	locs = np.array( zip( locs[1], locs[0] ) )
 
-	# get the start and stop times for each feature in the IAD
-	sparse_map = []
-	for i in range(iad.shape[0]):
-		assert len(locs) != 0, "ERROR: couldn't find Locs: " + ex["iad_path_frames_"+str(layer)]
+	if(len(locs) != 0):
+		# get the start and stop times for each feature in the IAD
+		sparse_map = []
+		for i in range(iad.shape[0]):
+			#assert len(locs) != 0, "ERROR: couldn't find Locs: " + ex["iad_path_frames_"+str(layer)]
 
-		feature_times = locs[np.where(locs[:,0] == i)][:,1]
-		sparse_map.append( find_start_stop( feature_times ))
-	#sparse_map = postprocess(sparse_map, layer)
+			feature_times = locs[np.where(locs[:,0] == i)][:,1]
+			sparse_map.append( find_start_stop( feature_times ))
+		#sparse_map = postprocess(sparse_map, layer)
+	else:
+		sparse_map = [[] for x in iad.shape[0]]
 
 	# write start_stop_times to file.
 	#print(ex['b_path_{0}'.format(layer)])
