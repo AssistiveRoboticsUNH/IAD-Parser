@@ -122,7 +122,7 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 			sparse_map.append( find_start_stop( feature_times ))
 		#sparse_map = postprocess(sparse_map, layer)
 	else:
-		sparse_map = [[] for x in iad.shape[0]]
+		sparse_map = [[] for x in xrange(iad.shape[0])]
 
 	# write start_stop_times to file.
 	#print(ex['b_path_{0}'.format(layer)])
