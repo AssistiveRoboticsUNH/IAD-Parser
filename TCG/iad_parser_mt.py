@@ -264,7 +264,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	threshold_matrix /= threshold_count
 
 	filename = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), 'threshold_values.npy')
-	#np.save(filename, threshold_matrix)
+	np.save(filename, threshold_matrix)
 	
 	assert os.path.exists(filename), "filename cannot be found: "+filename
 	threshold_matrix = np.load(filename)
