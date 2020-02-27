@@ -239,7 +239,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				os.makedirs(bin_dir)
 			bin_path = 'b_path_{0}'.format(layer)
 			ex[bin_path] = os.path.join(bin_dir, '{0}_{1}.b'.format(ex['example_id'], layer))
-
+	csv_contents = csv_contents[:10]
 
 	p = Pool(num_procs)
 
