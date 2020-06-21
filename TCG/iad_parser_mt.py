@@ -223,7 +223,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 	
 	for ex in csv_contents:
-		
+		'''
 		for layer in range(DEPTH_SIZE):
 
 			#get IAD files for read
@@ -239,6 +239,21 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 				os.makedirs(bin_dir)
 			bin_path = 'b_path_{0}'.format(layer)
 			ex[bin_path] = os.path.join(bin_dir, '{0}_{1}.b'.format(ex['example_id'], layer))
+		'''
+
+		#get IAD files for read (no layer)
+		for dtype in dataset_type_list:
+
+			iad_path = 'iad_path_{0}'.format(dtype)
+			ex[iad_path] = os.path.join(dataset_dir, 'iad_{0}_{1}_{2}'.format(model_type, dtype, dataset_id), ex['label_name'], '{0}.npz'.format(ex['example_id']))
+			assert os.path.exists(ex[iad_path]), "Cannot locate IAD file: "+ ex[iad_path]
+
+		#generate binary directory for write
+		bin_dir = os.path.join(dataset_dir, 'b_{0}_{1}_{2}'.format(model_type, dataset_type, dataset_id), ex['label_name']) 
+		if ( not os.path.exists(bin_dir) ):
+			os.makedirs(bin_dir)
+		bin_path = 'b_path'
+		ex[bin_path] = os.path.join(bin_dir, '{0}.b'.format(ex['example_id']))
 	#csv_contents = csv_contents
 
 	p = Pool(num_procs)
