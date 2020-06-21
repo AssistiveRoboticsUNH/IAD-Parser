@@ -209,7 +209,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	if(model_type == 'trn'):
 		from trn_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
 	if(model_type == 'tsm'):
-		from tsm_wrapper import DEPTH_SIZE, CNN_FEATURE_COUNT
+		from tsm_wrapper3 import DEPTH_SIZE, CNN_FEATURE_COUNT
 
 	dataset_type_list = []
 	if(dataset_type=="frames" or dataset_type=="both"):
