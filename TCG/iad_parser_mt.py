@@ -307,10 +307,11 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	threshold_matrix = np.zeros((DEPTH_SIZE, max_features))
 	threshold_count = np.zeros((DEPTH_SIZE, max_features))
 	for x in split_threshold_info:
-		for layer in range(DEPTH_SIZE):
-			for feature in range(num_features[layer]):
-				threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
-				threshold_count[layer, feature] += x[layer][feature].count
+		#for layer in range(DEPTH_SIZE):
+		layer = 0
+		for feature in range(num_features):
+			threshold_matrix[layer, feature] += x[layer][feature].mean * x[layer][feature].count
+			threshold_count[layer, feature] += x[layer][feature].count
 	threshold_count[np.where(threshold_count == 0)] = 1
 
 	threshold_matrix /= threshold_count
