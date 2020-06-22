@@ -298,6 +298,7 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 	other_args = [DEPTH_SIZE,dataset_type_list,num_features]
 	
 	print("Getting Threshold")
+	print("other_args:", other_args)
 	split_threshold_info = split_dataset_run_func(p, determine_threshold, training_dataset, other_args)
 
 	#combine chunked threshodl info together
