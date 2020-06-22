@@ -129,10 +129,12 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 	'''
 
 	# get threshold values
-	threshold_values = threshold_matrix[layer][:num_features[layer]]
+	#threshold_values = threshold_matrix[layer][:num_features[layer]]
+	threshold_values = threshold_matrix[layer][:num_features]
 
 	# open the IAD
-	iad = open_iad(ex, dataset_type_list, layer)
+	#iad = open_iad(ex, dataset_type_list, layer)
+	iad = open_iad(ex, dataset_type_list)
 	#iad = preprocess(iad, layer)
 
 	# threshold, reverse the locations to account for the transpose
@@ -153,7 +155,8 @@ def sparsify_iad(ex, layer, dataset_type_list, threshold_matrix, num_features, n
 
 	# write start_stop_times to file.
 	#print(ex['b_path_{0}'.format(layer)])
-	write_sparse_matrix(ex['b_path_{0}'.format(layer)], sparse_map)
+	#write_sparse_matrix(ex['b_path_{0}'.format(layer)], sparse_map)
+	write_sparse_matrix(ex['b_path'], sparse_map)
 	
 def sparsify_iad_dataset(inp):
 	'''
