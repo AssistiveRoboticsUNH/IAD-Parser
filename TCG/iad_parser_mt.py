@@ -230,6 +230,8 @@ def split_dataset_run_func(p, func, dataset, other_args):
 					)
 		last += chunk_size
 
+	print("inputs[0]:", inputs[0])
+
 	return [func(inputs[0])]
 	#return p.map(func, inputs)
 
