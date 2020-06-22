@@ -13,7 +13,7 @@ sys.path.append("../../IAD-Generator/iad-generation/")
 from csv_utils import read_csv
 
 from multiprocessing import Pool
-
+'''
 def open_iad(ex, dataset_type_list, layer, pruning_indexes=None):
 
 	# open the IAD and prune any un-wanted features
@@ -27,6 +27,33 @@ def open_iad(ex, dataset_type_list, layer, pruning_indexes=None):
 			min_len = min(min_len, iad_data[idx].shape[1])
 		else:
 			iad.append(iad_data)
+
+	#if the IADs for frames and flow are different lengths make them the same
+	if(pruning_indexes != None):
+		for i in range(len(iad)):
+			iad[i] = iad[i][:, :min_len]
+
+	#combine frames and flow together
+	iad = np.concatenate(iad, axis=0)
+
+	return iad
+'''
+def open_iad(ex, dataset_type_list, pruning_indexes=None):
+
+	# open the IAD and prune any un-wanted features
+	iad, min_len = [], sys.maxint
+	for dtype in dataset_type_list:
+		iad_data = np.load(ex['iad_path_{0}'.format(dtype)])["data"]
+
+		'''
+		if(pruning_indexes != None):
+			idx = pruning_indexes[dtype]
+			iad.append(iad_data[idx])
+			min_len = min(min_len, iad_data[idx].shape[1])
+		else:
+			iad.append(iad_data)
+		'''
+		iad.append(iad_data)
 
 	#if the IADs for frames and flow are different lengths make them the same
 	if(pruning_indexes != None):
@@ -167,24 +194,27 @@ def determine_threshold(inp):
 	'''
 
 	threshold = []
-	for layer in range(depth_size):
-		local_threshold = [Avg() for i in range(num_features[layer])]
 
-		for j, ex in enumerate(csv_dataset):
-			if(j %100 == 0):
-				print("Gen threshold: layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
+	#for layer in range(depth_size):
+	local_threshold = [Avg() for i in range(num_features[layer])]
 
-			# open IAD
-			iad = open_iad(ex, dataset_type_list, layer)
+	for j, ex in enumerate(csv_dataset):
+		if(j %100 == 0):
+			#print("Gen threshold: layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
+			print("Gen threshold: csv_idx {1}/{2}".format( j, len(csv_dataset)) )
 
-			#if(len(local_threshold) == 0):
-			#	local_threshold = [Avg() for n in range(iad.shape[0])]
 
-			#update local averages
-			for i, f in enumerate(iad):
-				local_threshold[i].update(f)
+		# open IAD
+		iad = open_iad(ex, dataset_type_list, layer)
 
-		threshold.append(local_threshold)
+		#if(len(local_threshold) == 0):
+		#	local_threshold = [Avg() for n in range(iad.shape[0])]
+
+		#update local averages
+		for i, f in enumerate(iad):
+			local_threshold[i].update(f)
+
+	threshold.append(local_threshold)
 	return threshold
 
 def split_dataset_run_func(p, func, dataset, other_args):
