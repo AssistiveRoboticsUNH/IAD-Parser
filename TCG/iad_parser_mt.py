@@ -196,7 +196,8 @@ def determine_threshold(inp):
 	threshold = []
 
 	#for layer in range(depth_size):
-	local_threshold = [Avg() for i in range(num_features[layer])]
+	#local_threshold = [Avg() for i in range(num_features[layer])]
+	local_threshold = [Avg() for i in range(num_features)]
 
 	for j, ex in enumerate(csv_dataset):
 		if(j %100 == 0):
