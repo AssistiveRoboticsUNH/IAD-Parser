@@ -236,8 +236,8 @@ def split_dataset_run_func(p, func, dataset, other_args):
 
 	#print("inputs[0]:", inputs[0])
 
-	return [func(inputs[0])]
-	#return p.map(func, inputs)
+	#return [func(inputs[0])]
+	return p.map(func, inputs)
 
 def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id, 
 	max_features, num_procs):
