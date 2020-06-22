@@ -253,7 +253,8 @@ def main(model_type, dataset_dir, csv_filename, dataset_type, dataset_id,
 
 	#get files from dataset
 	csv_contents = read_csv(csv_filename)
-	num_features = [min(feat_num, max_features) for feat_num in CNN_FEATURE_COUNT]
+	#num_features = [min(feat_num, max_features) for feat_num in CNN_FEATURE_COUNT]
+	num_features = 128#[min(feat_num, max_features) for feat_num in CNN_FEATURE_COUNT]
 
 	
 	for ex in csv_contents:
