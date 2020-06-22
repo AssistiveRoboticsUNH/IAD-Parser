@@ -203,8 +203,7 @@ def determine_threshold(inp):
 	for j, ex in enumerate(csv_dataset):
 		if(j %100 == 0):
 			#print("Gen threshold: layer: {0}, csv_idx {1}/{2}".format(layer, j, len(csv_dataset)) )
-			print(j, len(csv_dataset))
-			print( "Gen threshold: csv_idx {1}/{2}".format( j, len(csv_dataset)) )
+			print( "Gen threshold: csv_idx {0}/{1}".format( j, len(csv_dataset)) )
 
 
 		# open IAD
