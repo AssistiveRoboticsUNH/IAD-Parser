@@ -207,7 +207,8 @@ def determine_threshold(inp):
 
 
 		# open IAD
-		iad = open_iad(ex, dataset_type_list, layer)
+		#iad = open_iad(ex, dataset_type_list, layer)
+		iad = open_iad(ex, dataset_type_list)
 
 		#if(len(local_threshold) == 0):
 		#	local_threshold = [Avg() for n in range(iad.shape[0])]
