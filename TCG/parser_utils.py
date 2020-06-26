@@ -34,6 +34,8 @@ def read_sparse_matrix(filename):
 
 	f = open(filename,'rb')
 	num_features = int(unpack('I',f.read(4))[0])
+
+	print("num_features:", num_features)
 	sparse_map = [[] for x in range(num_features)]
 	track = -1
 	while True:
@@ -49,3 +51,6 @@ def read_sparse_matrix(filename):
 			sparse_map[track].append([p1,p2])
 		
 	return sparse_map
+
+if __name__ == '__main__':
+	read_sparse_matrix("~/datasets/Something-Something/b_tsm_frames_1/0/1.b")
