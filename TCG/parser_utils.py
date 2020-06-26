@@ -53,4 +53,4 @@ def read_sparse_matrix(filename):
 	return sparse_map
 
 if __name__ == '__main__':
-	read_sparse_matrix("~/datasets/Something-Something/b_tsm_frames_1/0/1.b")
+	read_sparse_matrix("~/datasets/Something-Something/b_tsm_frames_1/0/2.b")
